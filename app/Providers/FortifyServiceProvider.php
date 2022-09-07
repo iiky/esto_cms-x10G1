@@ -39,7 +39,7 @@ class FortifyServiceProvider extends ServiceProvider
         Fortify::resetUserPasswordsUsing(ResetUserPassword::class);
 
         RateLimiter::for('login', function (Request $request) {
-            $email = (string) $request->email;
+            $email = (string) $request->username;
 
             return Limit::perMinute(5)->by($email . $request->ip());
         });
@@ -74,7 +74,9 @@ class FortifyServiceProvider extends ServiceProvider
         });
 
         Fortify::authenticateUsing(function (Request $request) {
-            $user = User::where('email', $request->email)->first();
+            $user = User::where('email', $request->username)
+                ->orWhere('username', $request->username)
+                ->first();
 
             if (
                 $user &&

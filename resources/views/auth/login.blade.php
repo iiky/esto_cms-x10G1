@@ -14,9 +14,9 @@
                     <h4>Sign in to account</h4>
                     <p>Enter your username or email & password to login</p>
                     <div class="form-group">
-                        <label class="col-form-label">{{ __('Email Address') }}</label>
-                        <input class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus placeholder="Your Account">
-                        @error('email')
+                        <label class="col-form-label">{{ __('Username OR Email Address') }}</label>
+                        <input class="form-control @error('username') is-invalid @enderror" name="username" value="{{ old('username') }}" required autocomplete="username" autofocus placeholder="Your Account">
+                        @error('username')
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{ $message }}</strong>
                             </span>
