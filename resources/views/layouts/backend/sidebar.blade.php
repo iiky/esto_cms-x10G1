@@ -17,6 +17,16 @@
                         <li class="sidebar-list">
                             <a id="{{ $x }}" class="sidebar-link sidebar-title {{ (request()->segment(1) == 'dashboard') ? 'active' : ''  }} link-nav" href="{{ route('dashboard') }}"><i data-feather="home"> </i><span>Dashboard</span></a>
                         </li>
+                        @php $x++ @endphp
+                        @foreach($menus as $menu)
+                            <li class="sidebar-list">
+                                <a id="{{ $x }}" class="sidebar-link sidebar-title @if(!ISSET($menu['child'])) link-nav @endif {{ ('/'.request()->segment(1) == $menu['href']) ? 'active' : '' }}" href="@if(isset($menu['href'])) {{ url($menu['href']) }} @else javascript:void(0) @endif"><i data-feather="{{ $menu['icon'] }}"> </i><span>{{ $menu['nama_menu'] }}</span></a>
+                                @if(ISSET($menu['child']))
+                                    @include('layouts.backend.sidebarMainChild',['menus'=>$menu['child'], 'flag_id'=>$x.'-'])
+                                @endif
+                            </li>
+                            @php $x++ @endphp
+                        @endforeach
                     </ul>
                 </div>
                 <div class="right-arrow" id="right-arrow"><i data-feather="arrow-right"></i></div>
