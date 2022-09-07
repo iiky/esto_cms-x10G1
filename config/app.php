@@ -177,6 +177,8 @@ return [
         App\Providers\RouteServiceProvider::class,
         // Defined Fortify
         App\Providers\FortifyServiceProvider::class,
+        // Defined Spatie
+        Spatie\Permission\PermissionServiceProvider::class,
 
     ],
 
