@@ -30,8 +30,7 @@
                         @csrf
                         <div class="card-body">
                             <div class="row">
-                                <div class="col">
-                                    
+                                <div class="col">                                    
                                     <div class="mb-3 row">
                                         <label class="col-sm-3 col-form-label">Category</label>
                                         <div class="col-sm-9">

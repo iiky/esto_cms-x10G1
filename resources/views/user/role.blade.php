@@ -20,9 +20,6 @@
         <div class="row">
             <div class="col-sm-12">
                 <div class="card">
-                    <div class="card-header">
-                        <h5>Create</h5>
-                    </div>
                     <form class="form theme-form" method="post" action="{{ $action }}">
                         @csrf
                         <div class="card-body">
