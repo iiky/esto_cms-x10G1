@@ -6873,7 +6873,7 @@ div.DTS div.dataTables_scrollBody table {
 }
 
 .dataTables_wrapper {
-    padding: 0;
+    padding: 1px;
     width: 100%
 }
 
