@@ -77,7 +77,9 @@ class ArticleCategoryController extends Controller
     {
         abort_if(Gate::denies('Article Category Update'), 403);
 
-        $request['slug'] = SlugService::createSlug(ArticleCategory::class, 'slug', $request->name);
+        if ($request->name != $articleCategory->name) {
+            $request['slug'] = SlugService::createSlug(ArticleCategory::class, 'slug', $request->name);
+        }
 
         ArticleCategory::find($articleCategory->id)
             ->update($request->all());

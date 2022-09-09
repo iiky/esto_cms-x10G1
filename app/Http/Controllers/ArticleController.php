@@ -124,7 +124,9 @@ class ArticleController extends Controller
         $request['published_at'] = date('Y-m-d', strtotime($request->published_at));
         $request['user_id'] = auth()->user()->id;
         $request['excerpt'] = Str::limit(strip_tags($request->content), 200);
-        $request['slug'] = SlugService::createSlug(Article::class, 'slug', $request->title);
+        if ($request->title != $article->title) {
+            $request['slug'] = SlugService::createSlug(Article::class, 'slug', $request->title);
+        }
 
         Article::find($article->id)->update($request->all());
 
