@@ -74,7 +74,7 @@
                                         <label class="col-sm-3 col-form-label">Permission Group</label>
                                         <div class="col-sm-9">
                                             <select class="js-example-basic-single col-sm-12 @error('permission_group_id') is-invalid @enderror" name="permission_group_id">
-                                                <option> --Choose Permission Group-- </option>
+                                                <option value=""> --Choose Permission Group-- </option>
                                                 @foreach ($permissiongroups as $permissiongroup)
                                                     <option value="{{ $permissiongroup->id }}"  @if(isset($menu_data)) @if($menu_data->permission_group_id==$permissiongroup->id) selected @endif @else @if(old('permission_group_id')==$permissiongroup->id) selected @endif @endif >{{ $permissiongroup->name }}</option>
                                                 @endforeach
