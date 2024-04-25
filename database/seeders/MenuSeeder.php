@@ -24,7 +24,7 @@ class MenuSeeder extends Seeder
             'menu_id' => '1',
             'nama_menu' => 'User Management',
             'status' => '1',
-            'sort' => '1',
+            'sort' => '2',
         ]);
         Menu::create([
             'menu_id' => '2',
@@ -64,7 +64,7 @@ class MenuSeeder extends Seeder
             'permission_group_id' => 5,
             'href' => '/menu',
             'status' => '1',
-            'sort' => '2',
+            'sort' => '3',
         ]);
 
         Menu::create([
@@ -90,6 +90,15 @@ class MenuSeeder extends Seeder
             'href' => '/article',
             'status' => '1',
             'sort' => '2',
+        ]);
+
+        Menu::create([
+            'menu_id' => '1',
+            'nama_menu' => 'Website Setting',
+            'permission_group_id' => 8,
+            'href' => '/setting',
+            'status' => '1',
+            'sort' => '1',
         ]);
     }
 }

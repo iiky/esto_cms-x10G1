@@ -25,7 +25,7 @@
             <div class="col-12">
                 <div class="login-card">
                 <div>
-                    <div><a class="logo" href="index.html"><img class="img-fluid for-light" src="../assets/images/logo/login.png" alt="looginpage"><img class="img-fluid for-dark" src="../assets/images/logo/logo_dark.png" alt="looginpage"></a></div>
+                    <div><a class="logo" href="{{ route('home') }}"><img class="img-fluid for-light" src="{{ asset('/assets/images/logo/login.png') }}" alt="looginpage"><img class="img-fluid for-dark" src="{{ asset('/assets/images/logo/logo_dark.png') }}" alt="looginpage"></a></div>
                     <div class="login-main">
                         <form class="theme-form" method="POST" action="{{ route('verification.send') }}">
                             @csrf

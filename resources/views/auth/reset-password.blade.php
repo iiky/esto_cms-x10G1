@@ -20,11 +20,11 @@
     <div class="page-wrapper">
       <div class="container-fluid p-0">
         <div class="row">
-          <div class="col-12">     
+          <div class="col-12">
             <div class="login-card">
               <div>
-                <div><a class="logo" href="/"><img class="img-fluid for-light" src="/assets/images/logo/login.png" alt="looginpage"><img class="img-fluid for-dark" src="/assets/images/logo/logo_dark.png" alt="looginpage"></a></div>
-                <div class="login-main"> 
+                <div><a class="logo" href="{{ route('home') }}"><img class="img-fluid for-light" src="{{ asset('/assets/images/logo/login.png') }}" alt="looginpage"><img class="img-fluid for-dark" src="{{ asset('/assets/images/logo/logo_dark.png') }}" alt="looginpage"></a></div>
+                <div class="login-main">
                      @if (session('status'))
                     <div class="alert alert-success" role="alert">
                         {{ session('status') }}

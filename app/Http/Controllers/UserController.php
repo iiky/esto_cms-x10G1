@@ -2,13 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Support\Facades\Gate;
+use App\Traits\UsersAuthorizable;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
 
 class UserController extends Controller
 {
+    use UsersAuthorizable;
+
     /**
      * Display a listing of the resource.
      *
@@ -16,7 +18,6 @@ class UserController extends Controller
      */
     public function index()
     {
-        abort_if(Gate::denies('User Access'), 403);
         if (auth()->user()->hasRole('Super Admin')) {
             $this->data['users'] = User::all();
         } else {
@@ -33,8 +34,6 @@ class UserController extends Controller
      */
     public function create()
     {
-        abort_if(Gate::denies('User Create'), 403);
-
         $this->data['action'] = '/user';
         return view('user.form', $this->data);
     }
@@ -69,8 +68,6 @@ class UserController extends Controller
      */
     public function edit($id)
     {
-        abort_if(Gate::denies('User Update'), 403);
-
         $this->data['user_data'] = User::where('id',$id)->first();
         $this->data['action'] = "/user/".$id;
         return view('user.form', $this->data);
@@ -90,8 +87,6 @@ class UserController extends Controller
 
     public function role(User $user)
     {
-        abort_if(Gate::denies('User Role Create'), 403);
-
         $this->data['roles'] = Role::all();
         $this->data['permissions'] = $user->getAllPermissions();
         $this->data['user'] = $user;
@@ -102,8 +97,6 @@ class UserController extends Controller
 
     public function roleaction(Request $request, User $user)
     {
-        abort_if(Gate::denies('User Role Create'), 403);
-
         $user->syncRoles($request['roles']);
 
         return redirect('/user')->with('success', 'Roles ' . $user->name . ' has been updated!');

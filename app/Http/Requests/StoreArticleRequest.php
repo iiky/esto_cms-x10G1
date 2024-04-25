@@ -29,6 +29,7 @@ class StoreArticleRequest extends FormRequest
             'content' => 'required',
             'article_category_id' => 'required',
             'published_at' => 'required',
+            'tags' => 'required',
         ];
     }
 }

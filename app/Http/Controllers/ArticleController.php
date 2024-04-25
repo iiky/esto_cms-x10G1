@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Support\Facades\Gate;
+use App\Traits\ArticlesAuthorizable;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use App\Models\Article;
@@ -13,6 +13,9 @@ use \Cviebrock\EloquentSluggable\Services\SlugService;
 
 class ArticleController extends Controller
 {
+
+    use ArticlesAuthorizable;
+
     /**
      * Display a listing of the resource.
      *
@@ -20,7 +23,6 @@ class ArticleController extends Controller
      */
     public function index()
     {
-        abort_if(Gate::denies('Article Access'), 403);
         $this->data['articles'] = Article::all();
 
         return view('article.index', $this->data);
@@ -33,8 +35,6 @@ class ArticleController extends Controller
      */
     public function create()
     {
-        abort_if(Gate::denies('Article Create'), 403);
-
         $this->data['categories'] = ArticleCategory::all();
         $this->data['action'] = "/article";
         return view('article.form', $this->data);
@@ -48,8 +48,6 @@ class ArticleController extends Controller
      */
     public function store(StoreArticleRequest $request)
     {
-        abort_if(Gate::denies('Article Create'), 403);
-
         if (isset($request['highlite'])) {
             $request['highlite'] = true;
         } else {
@@ -74,8 +72,6 @@ class ArticleController extends Controller
      */
     public function show(Article $article)
     {
-        abort_if(Gate::denies('Article Detail'), 403);
-
         $this->data['article_data'] = $article;
         return view('article.detail', $this->data);
     }
@@ -88,8 +84,6 @@ class ArticleController extends Controller
      */
     public function edit(Article $article)
     {
-        abort_if(Gate::denies('Article Update'), 403);
-
         $this->data['categories'] = ArticleCategory::all();
 
         $this->data['article_data'] = $article;
@@ -107,8 +101,6 @@ class ArticleController extends Controller
      */
     public function update(UpdateArticleRequest $request, Article $article)
     {
-        abort_if(Gate::denies('Article Update'), 403);
-
         if (isset($request['highlite'])) {
             $request['highlite'] = true;
         } else {
@@ -122,7 +114,6 @@ class ArticleController extends Controller
             $request['image_path'] = $request->file('image')->store('article-images');
         }
         $request['published_at'] = date('Y-m-d', strtotime($request->published_at));
-        $request['user_id'] = auth()->user()->id;
         $request['excerpt'] = Str::limit(strip_tags($request->content), 200);
         if ($request->title != $article->title) {
             $request['slug'] = SlugService::createSlug(Article::class, 'slug', $request->title);
@@ -141,8 +132,6 @@ class ArticleController extends Controller
      */
     public function destroy(Article $article)
     {
-        abort_if(Gate::denies('Article Delete'), 403);
-
         Article::destroy($article->id);
         if ($article->image_path) {
             Storage::delete($article->image_path);

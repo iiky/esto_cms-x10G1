@@ -2,13 +2,13 @@
 
 @section('container')
     <!-- login page start-->
-    <div class="container-fluid p-0"> 
+    <div class="container-fluid p-0">
       <div class="row m-0">
-        <div class="col-12 p-0">    
+        <div class="col-12 p-0">
           <div class="login-card">
             <div>
-              <div><a class="logo" href="/"><img class="img-fluid for-light" src="/assets/images/logo/login.png" alt="looginpage"><img class="img-fluid for-dark" src="/assets/images/logo/logo_dark.png" alt="looginpage"></a></div>
-              <div class="login-main"> 
+              <div><a class="logo" href="{{ route('home') }}"><img class="img-fluid for-light" src="{{ asset('/assets/images/logo/login.png') }}" alt="looginpage"><img class="img-fluid for-dark" src="{{ asset('/assets/images/logo/logo_dark.png') }}" alt="looginpage"></a></div>
+              <div class="login-main">
                 <form class="theme-form"method="POST" action="{{ route('register') }}">
                      @csrf
                     <h4>Create your account</h4>

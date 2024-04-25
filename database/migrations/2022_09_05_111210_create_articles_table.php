@@ -24,6 +24,7 @@ class CreateArticlesTable extends Migration
             $table->text('content');
             $table->date('published_at');
             $table->boolean('highlite')->default(false);
+            $table->text('tags')->nullable();
             $table->timestamps();
         });
     }

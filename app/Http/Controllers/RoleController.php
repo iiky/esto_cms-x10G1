@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Support\Facades\Gate;
+use App\Traits\RolesAuthorizable;
 use Illuminate\Http\Request;
 use App\Http\Requests\StoreRoleRequest;
 use App\Http\Requests\UpdateRoleRequest;
@@ -12,6 +12,8 @@ use Spatie\Permission\Models\Role;
 
 class RoleController extends Controller
 {
+    use RolesAuthorizable;
+
     /**
      * Display a listing of the resource.
      *
@@ -19,7 +21,6 @@ class RoleController extends Controller
      */
     public function index()
     {
-        abort_if(Gate::denies('Role Access'), 403);
         $this->data['roles'] = Role::all();
 
         return view('role.index', $this->data);
@@ -32,8 +33,6 @@ class RoleController extends Controller
      */
     public function create()
     {
-        abort_if(Gate::denies('Role Create'), 403);
-
         $this->data['action'] = "/role";
         return view('role.form', $this->data);
     }
@@ -46,8 +45,6 @@ class RoleController extends Controller
      */
     public function store(StoreRoleRequest $request)
     {
-        abort_if(Gate::denies('Role Create'), 403);
-
         Role::create($request->all());
 
         return redirect('/role')->with('success', 'New role has been created!');
@@ -61,8 +58,6 @@ class RoleController extends Controller
      */
     public function show(Role $role)
     {
-        abort_if(Gate::denies('Role Detail'), 403);
-
         $this->data['action'] = "/role/showaction/" . $role->id;
         $this->data['permission_groups'] = PermissionGroup::whereNull('permission_group_id')->get();
         $this->data['permissions'] = Permission::whereNull('permission_group_id')->get();
@@ -74,8 +69,6 @@ class RoleController extends Controller
 
     public function showaction(Request $request, Role $role)
     {
-        abort_if(Gate::denies('Role Detail'), 403);
-
         $permission_array = explode(',', $request['permission']);
 
         foreach ($role->permissions as $permission) {
@@ -101,8 +94,6 @@ class RoleController extends Controller
      */
     public function edit(Role $role)
     {
-        abort_if(Gate::denies('Role Update'), 403);
-
         $this->data['role_data'] = $role;
         $this->data['action'] = "/role/" . $role->id;
         return view('role.form', $this->data);
@@ -117,8 +108,6 @@ class RoleController extends Controller
      */
     public function update(UpdateRoleRequest $request, Role $role)
     {
-        abort_if(Gate::denies('Role Update'), 403);
-
         Role::find($role->id)
             ->update($request->all());
 
@@ -133,8 +122,6 @@ class RoleController extends Controller
      */
     public function destroy(Role $role)
     {
-        abort_if(Gate::denies('Role Delete'), 403);
-
         Role::destroy($role->id);
         return redirect('/role')->with('success', 'Role has been deleted!');
     }

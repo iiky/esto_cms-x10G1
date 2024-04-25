@@ -20,11 +20,11 @@
     <div class="page-wrapper">
       <div class="container-fluid p-0">
         <div class="row">
-          <div class="col-12">     
+          <div class="col-12">
             <div class="login-card">
               <div>
-                <div><a class="logo" href="/"><img class="img-fluid for-light" src="/assets/images/logo/login.png" alt="looginpage"><img class="img-fluid for-dark" src="/assets/images/logo/logo_dark.png" alt="looginpage"></a></div>
-                <div class="login-main"> 
+                <div><a class="logo" href="{{ route('home') }}"><img class="img-fluid for-light" src="{{ asset('/assets/images/logo/login.png') }}" alt="looginpage"><img class="img-fluid for-dark" src="{{ asset('/assets/images/logo/logo_dark.png') }}" alt="looginpage"></a></div>
+                <div class="login-main">
                     @if (session('status'))
                         <div class="alert alert-success" role="alert">
                             {{ session('status') }}
@@ -42,7 +42,7 @@
                                 </span>
                             @enderror
                         </div>
-                        
+
                         <div class="text-end mt-3">
                             <button class="btn btn-primary btn-block w-100" type="submit">{{ __('Send Reset Password') }}</button>
                         </div>
@@ -57,19 +57,19 @@
     </div>
     <!-- page-wrapper Ends-->
     <!-- latest jquery-->
-    <script src="/assets/js/jquery-3.5.1.min.js"></script>
+    <script src="{{ asset('/assets/js/jquery-3.5.1.min.js') }}"></script>
     <!-- Bootstrap js-->
-    <script src="/assets/js/bootstrap/bootstrap.bundle.min.js"></script>
+    <script src="{{ asset('/assets/js/bootstrap/bootstrap.bundle.min.js') }}"></script>
     <!-- feather icon js-->
-    <script src="/assets/js/icons/feather-icon/feather.min.js"></script>
-    <script src="/assets/js/icons/feather-icon/feather-icon.js"></script>
+    <script src="{{ asset('/assets/js/icons/feather-icon/feather.min.js') }}"></script>
+    <script src="{{ asset('/assets/js/icons/feather-icon/feather-icon.js') }}"></script>
     <!-- scrollbar js-->
     <!-- Sidebar jquery-->
-    <script src="/assets/js/config.js"></script>
+    <script src="{{ asset('/assets/js/config.js') }}"></script>
     <!-- Plugins JS start-->
     <!-- Plugins JS Ends-->
     <!-- Theme js-->
-    <script src="/assets/js/script.js"></script>
+    <script src="{{ asset('/assets/js/script.js') }}"></script>
     <!-- login js-->
     <!-- Plugin used-->
 @endsection

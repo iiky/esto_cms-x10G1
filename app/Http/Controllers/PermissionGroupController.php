@@ -2,13 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Support\Facades\Gate;
+use App\Traits\PermissionGroupsAuthorizable;
 use App\Models\PermissionGroup;
 use App\Http\Requests\StorePermissionGroupRequest;
 use App\Http\Requests\UpdatePermissionGroupRequest;
 
 class PermissionGroupController extends Controller
 {
+    use PermissionGroupsAuthorizable;
+
     /**
      * Display a listing of the resource.
      *
@@ -16,9 +18,8 @@ class PermissionGroupController extends Controller
      */
     public function index()
     {
-        abort_if(Gate::denies('Permission Group Access'), 403);
         $this->data['permissiongroups'] = PermissionGroup::all();
-        
+
         return view('permissiongroup.index', $this->data);
     }
 
@@ -29,9 +30,7 @@ class PermissionGroupController extends Controller
      */
     public function create()
     {
-        abort_if(Gate::denies('Permission Group Create'), 403);
-
-        $this->data['permissiongroups'] = PermissionGroup::all(); 
+        $this->data['permissiongroups'] = PermissionGroup::all();
 
         $this->data['action'] = "/permissiongroup";
         return view('permissiongroup.form', $this->data);
@@ -45,8 +44,6 @@ class PermissionGroupController extends Controller
      */
     public function store(StorePermissionGroupRequest $request)
     {
-        abort_if(Gate::denies('Permission Group Create'), 403);
-
         PermissionGroup::create($request->all());
 
         return redirect('/permissiongroup')->with('success', 'New permission group has been created!');
@@ -60,9 +57,7 @@ class PermissionGroupController extends Controller
      */
     public function edit(PermissionGroup $permissiongroup)
     {
-        abort_if(Gate::denies('Permission Group Update'), 403);
-
-        $this->data['permissiongroups'] = PermissionGroup::all(); 
+        $this->data['permissiongroups'] = PermissionGroup::all();
 
         $this->data['permissiongroup_data'] = $permissiongroup;
         $this->data['action'] = "/permissiongroup/".$permissiongroup->id;
@@ -78,8 +73,6 @@ class PermissionGroupController extends Controller
      */
     public function update(UpdatePermissionGroupRequest $request, PermissionGroup $permissiongroup)
     {
-        abort_if(Gate::denies('Permission Group Update'), 403);
-
         PermissionGroup::find($permissiongroup->id)
             ->update($request->all());
 
@@ -94,8 +87,6 @@ class PermissionGroupController extends Controller
      */
     public function destroy(PermissionGroup $permissiongroup)
     {
-        abort_if(Gate::denies('Permission Group Delete'), 403);
-
         PermissionGroup::destroy($permissiongroup->id);
         return redirect('/permissiongroup')->with('success', 'Permission Group has been deleted!');
     }

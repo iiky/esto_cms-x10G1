@@ -30,7 +30,7 @@
                         @csrf
                         <div class="card-body">
                             <div class="row">
-                                <div class="col">                                    
+                                <div class="col">
                                     <div class="mb-3 row">
                                         <label class="col-sm-3 col-form-label">Category</label>
                                         <div class="col-sm-9">
@@ -91,7 +91,18 @@
                                             @enderror
                                         </div>
                                     </div>
-                                    
+                                    <div class="mb-3 row">
+                                        <label for="tags" class="col-sm-3 col-form-label">Tags</label>
+                                        <div class="col-sm-9">
+                                            <input class="form-control @error('tags') is-invalid @enderror tags" name="tags" id="tags" type="text" value="{{ (isset($article_data))? old('tags',$article_data->tags) : old('tags') }}" placeholder="Title" autocomplete="off">
+                                            @error('tags')
+                                                <div class="invalid-feedback">
+                                                    {{ $message }}
+                                                </div>
+                                            @enderror
+                                        </div>
+                                    </div>
+
                                     <div class="mb-3 row">
                                         <label class="col-sm-3 col-form-label" for="image">Image</label>
                                         <div class="col-sm-9">
@@ -103,15 +114,15 @@
                                                 </div>
                                             @enderror
                                         </div>
-                                    </div>                                    
+                                    </div>
 
                                     <div class="mb-3 row">
                                         <label class="col-sm-3 col-form-label" for="content">Content</label>
-                                        
+
                                         @error('content')
                                             <p class="text-danger">{{ $message }}</p>
                                         @enderror
-                                        
+
                                         <div class="theme-form">
                                             <div class="mb-3">
                                                 <textarea name="content" id="content" cols="30" rows="10">
@@ -120,7 +131,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    
+
                                 </div>
                             </div>
                         </div>
@@ -138,8 +149,8 @@
 @endsection
 
 @section('javascript')
-    <script src="/assets/js/editor/ckeditor/ckeditor.js"></script>
-    <script src="/assets/js/editor/ckeditor/styles.js"></script>
+    <script src="{{ asset('/assets/js/editor/ckeditor/ckeditor.js') }}"></script>
+    <script src="{{ asset('/assets/js/editor/ckeditor/styles.js') }}"></script>
     <script>
         CKEDITOR.replace('content', {
             on: {
@@ -159,7 +170,7 @@
         function previewImage(){
             const image = document.querySelector('#image');
             const imgPreview = document.querySelector('.img-preview');
-            
+
             imgPreview.style.display = 'block';
 
             const oFReader = new FileReader();
@@ -168,6 +179,6 @@
             oFReader.onload = function(oFREvent){
                 imgPreview.src = oFREvent.target.result;
             }
-        }       
+        }
     </script>
 @endsection

@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Support\Facades\Gate;
+use App\Traits\PermissionsAuthorizable;
 use App\Models\Permission;
 use App\Models\PermissionGroup;
 use App\Http\Requests\StorePermissionRequest;
@@ -10,6 +10,8 @@ use App\Http\Requests\UpdatePermissionRequest;
 
 class PermissionController extends Controller
 {
+    use PermissionsAuthorizable;
+
     /**
      * Display a listing of the resource.
      *
@@ -17,9 +19,8 @@ class PermissionController extends Controller
      */
     public function index()
     {
-        abort_if(Gate::denies('Permission Access'), 403);
         $this->data['permissions'] = Permission::all();
-        
+
         return view('permission.index', $this->data);
     }
 
@@ -30,9 +31,7 @@ class PermissionController extends Controller
      */
     public function create()
     {
-        abort_if(Gate::denies('Permission Create'), 403);
-
-        $this->data['permissiongroups'] = PermissionGroup::all();   
+        $this->data['permissiongroups'] = PermissionGroup::all();
 
         $this->data['action'] = "/permission";
         return view('permission.form', $this->data);
@@ -46,8 +45,6 @@ class PermissionController extends Controller
      */
     public function store(StorePermissionRequest $request)
     {
-        abort_if(Gate::denies('Permission Create'), 403);
-
         Permission::create($request->all());
 
         return redirect('/permission')->with('success', 'New permission has been created!');
@@ -61,9 +58,7 @@ class PermissionController extends Controller
      */
     public function edit(Permission $permission)
     {
-        abort_if(Gate::denies('Permission Update'), 403);
-
-        $this->data['permissiongroups'] = PermissionGroup::all(); 
+        $this->data['permissiongroups'] = PermissionGroup::all();
 
         $this->data['permission_data'] = $permission;
         $this->data['action'] = "/permission/".$permission->id;
@@ -79,8 +74,6 @@ class PermissionController extends Controller
      */
     public function update(UpdatePermissionRequest $request, Permission $permission)
     {
-        abort_if(Gate::denies('Permission Update'), 403);
-
         Permission::find($permission->id)
             ->update($request->all());
 
@@ -95,8 +88,6 @@ class PermissionController extends Controller
      */
     public function destroy(Permission $permission)
     {
-        abort_if(Gate::denies('Permission Delete'), 403);
-
         Permission::destroy($permission->id);
         return redirect('/permission')->with('success', 'Permission has been deleted!');
     }

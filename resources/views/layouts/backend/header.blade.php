@@ -13,7 +13,7 @@
     </div>
     </form>
     <div class="header-logo-wrapper col-auto p-0">
-        <div class="logo-wrapper"><a href="{{ route('dashboard') }}"><img class="img-fluid" src="/assets/images/logo/logo.png" alt=""></a></div>
+        <div class="logo-wrapper"><a href="{{ route('dashboard') }}"><img class="img-fluid" src="{{ asset('/assets/images/logo/logo.png') }}" alt=""></a></div>
         <div class="toggle-sidebar"><i class="status_toggle middle sidebar-toggle" data-feather="align-center"></i></div>
     </div>
     <div class="left-header col horizontal-wrapper ps-0">
@@ -36,14 +36,14 @@
         <li class="maximize"><a class="text-dark" href="#!" onclick="javascript:toggleFullScreen()"><i data-feather="maximize"></i></a></li>
         <li class="profile-nav onhover-dropdown p-0 me-0">
             <div class="media profile-media">
-                <img class="b-r-10" height="37" src="@if(filter_var(auth()->user()->foto, FILTER_VALIDATE_URL)) {{ auth()->user()->foto }} @else /assets/images/foto/{{ auth()->user()->foto }} @endif" alt="">
+                <img class="b-r-10" height="37" src="@if(filter_var(auth()->user()->foto, FILTER_VALIDATE_URL)) {{ auth()->user()->foto }} @else {{ asset('/assets/images/foto/'.auth()->user()->foto) }} @endif" alt="">
                 <div class="media-body"><span>{{ auth()->user()->name }}</span>
                 <p class="mb-0 font-roboto">Admin <i class="middle fa fa-angle-down"></i></p>
                 </div>
             </div>
             <ul class="profile-dropdown onhover-show-div">
-                <li><a href="https://siapkerja.kemnaker.go.id/app/profile" target="_blank"><i data-feather="user"></i><span>Account </span></a></li>
-                <li><a href="https://account.kemnaker.go.id/settings/security" target="_blank"><i data-feather="settings"></i><span>Settings</span></a></li>
+                <li><a href="#" target="_blank"><i data-feather="user"></i><span>Account </span></a></li>
+                <li><a href="#" target="_blank"><i data-feather="settings"></i><span>Settings</span></a></li>
                 <li>
                     <a href="{{ route('logout') }}"
                         onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
@@ -59,7 +59,7 @@
     </ul>
     </div>
     <script class="result-template" type="text/x-handlebars-template">
-    <div class="ProfileCard u-cf">                        
+    <div class="ProfileCard u-cf">
     <div class="ProfileCard-avatar"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-airplay m-0"><path d="M5 17H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-1"></path><polygon points="12 15 17 21 7 21 12 15"></polygon></svg></div>
     <div class="ProfileCard-details">
     <!-- <div class="ProfileCard-realName">{/{name}}</div> -->

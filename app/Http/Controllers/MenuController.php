@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Support\Facades\Gate;
+use App\Traits\MenusAuthorizable;
 use App\Models\Menu;
 use App\Models\PermissionGroup;
 use App\Http\Requests\StoreMenuRequest;
@@ -10,6 +10,8 @@ use App\Http\Requests\UpdateMenuRequest;
 
 class MenuController extends Controller
 {
+    use MenusAuthorizable;
+
     /**
      * Display a listing of the resource.
      *
@@ -17,9 +19,8 @@ class MenuController extends Controller
      */
     public function index()
     {
-        abort_if(Gate::denies('Menu Access'), 403);
         $this->data['menus'] = Menu::all();
-        
+
         return view('menu.index', $this->data);
     }
 
@@ -30,10 +31,8 @@ class MenuController extends Controller
      */
     public function create()
     {
-        abort_if(Gate::denies('Menu Create'), 403);
-
         $this->data['menus'] = Menu::all();
-        $this->data['permissiongroups'] = PermissionGroup::all(); 
+        $this->data['permissiongroups'] = PermissionGroup::all();
         $this->data['action'] = "/menu";
         return view('menu.form', $this->data);
     }
@@ -46,8 +45,6 @@ class MenuController extends Controller
      */
     public function store(StoreMenuRequest $request)
     {
-        abort_if(Gate::denies('Menu Create'), 403);
-
         Menu::create($request->all());
 
         return redirect('/menu')->with('success', 'New menu has been created!');
@@ -61,10 +58,8 @@ class MenuController extends Controller
      */
     public function edit(Menu $menu)
     {
-        abort_if(Gate::denies('Menu Update'), 403);
-
         $this->data['menus'] = Menu::all();
-        $this->data['permissiongroups'] = PermissionGroup::all(); 
+        $this->data['permissiongroups'] = PermissionGroup::all();
         $this->data['menu_data'] = $menu;
         $this->data['action'] = "/menu/".$menu->id;
         return view('menu.form', $this->data);
@@ -79,8 +74,6 @@ class MenuController extends Controller
      */
     public function update(UpdateMenuRequest $request, Menu $menu)
     {
-        abort_if(Gate::denies('Menu Update'), 403);
-
         Menu::find($menu->id)
             ->update($request->all());
 
@@ -95,8 +88,6 @@ class MenuController extends Controller
      */
     public function destroy(Menu $menu)
     {
-        abort_if(Gate::denies('Menu Delete'), 403);
-
         Menu::destroy($menu->id);
         return redirect('/menu')->with('success', 'Menu has been deleted!');
     }
