@@ -7,6 +7,8 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
 
+use App\DataTables\UserDataTable;
+
 class UserController extends Controller
 {
     use UsersAuthorizable;
@@ -16,15 +18,12 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request,UserDataTable $dataTable)
     {
-        if (auth()->user()->hasRole('Super Admin')) {
-            $this->data['users'] = User::all();
-        } else {
-            $this->data['users'] = User::where('id', '!=', '1')->get();
+        if($request->ajax()){
+            return $dataTable->ajax();
         }
-
-        return view('user.index', $this->data);
+        return $dataTable->render('user.index');
     }
 
     /**

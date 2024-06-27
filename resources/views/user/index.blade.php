@@ -11,7 +11,7 @@
         });
     </script>
 @endif
-    
+
 <div class="container-fluid">
     <div class="page-title">
         <div class="row">
@@ -27,7 +27,7 @@
             <div class="card">
                 <div class="card-body">
                     <div class="table-responsive">
-                        <table class="stripe" id="example-style-8">
+                        <table class="stripe" id="table-user">
                             <thead>
                                 <tr>
                                     <th>#</th>
@@ -40,31 +40,6 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($users as $user)
-                                    <tr>
-                                        <td>{{ $loop->iteration }}</td>
-                                        <td>{{ $user->username }}</td>
-                                        <td>{{ $user->name }}</td>
-                                        <td>{{ $user->email }}</td>
-                                        @canany(['User Update', 'User Banned', 'User Role Create'])
-                                            <td>
-                                                @can('User Role Create')
-                                                    <a href="/user/role/{{ $user->id }}" class="txt-primary"><i data-feather="box"></i></a>
-                                                @endcan
-                                                @can('User Update')
-                                                    <a href="/user/{{ $user->id }}/edit" class="txt-info"><i data-feather="edit-3"></i></a>
-                                                @endcan
-                                                @can('User Banned')
-                                                    <form method="post" action="/user/{{ $user->id }}" id="form-delete-{{ $loop->iteration }}" class="d-inline">
-                                                        @csrf    
-                                                        @method('delete')
-                                                        <a href="javascript:void(0)" onclick="swal({ title: 'Are you sure?', text: 'Banned this user, cause the user can\'t login!', icon: 'warning', buttons: true, dangerMode: true, }).then((willDelete) => { if (willDelete) { document.getElementById('form-delete-{{ $loop->iteration }}').submit(); } });" class="txt-danger"><i data-feather="slash"></i></a>
-                                                    </form>
-                                                @endcan                                         
-                                            </td>
-                                        @endcanany
-                                    </tr>
-                                @endforeach
                             </tbody>
                         </table>
                     </div>
@@ -78,10 +53,48 @@
                                 </ul>
                             </div>
                         </div>
-                    @endcan   
+                    @endcan
                 </div>
             </div>
         </div>
     </div>
 </div>
+@endsection
+@section('javascript')
+<link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.0.3/css/buttons.dataTables.min.css">
+<script src="https://cdn.datatables.net/buttons/1.0.3/js/dataTables.buttons.min.js"></script>
+<script src="{{ asset('/vendor/datatables/buttons.server-side.js') }}"></script>
+<script>
+   $(function () {
+
+        var table = $('#table-user').DataTable({
+            processing: true,
+            serverSide: true,
+            ajax: "{{ route('user.index') }}",
+            columns: [
+                {data: 'DT_RowIndex', name: 'DT_RowIndex'},
+                {data: 'username', name: 'username'},
+                {data: 'name', name: 'name'},
+                {data: 'email', name: 'email'},
+                {
+                    data: 'action',
+                    name: 'action',
+                    orderable: false,
+                    searchable: false,
+                    className:'text-center'
+                },
+            ],
+            order:[
+                [1,"desc"]
+            ],
+            fnDrawCallback:function(s){
+                feather.replace();
+            },
+            dom:"Bfrtip",
+            buttons:[
+                'excel', 'pdf', 'csv'
+            ]
+        });
+    });
+</script>
 @endsection
