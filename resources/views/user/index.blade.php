@@ -70,9 +70,16 @@
         var table = $('#table-user').DataTable({
             processing: true,
             serverSide: true,
+            language: {
+                "processing": "<i class='fa fa-refresh fa-spin'></i><br>Loading..... Please Wait"
+            },
             ajax: "{{ route('user.index') }}",
             columns: [
-                {data: 'DT_RowIndex', name: 'DT_RowIndex'},
+                {
+                    data: 'DT_RowIndex',
+                    name: 'DT_RowIndex',
+                    searchable: false,
+                },
                 {data: 'username', name: 'username'},
                 {data: 'name', name: 'name'},
                 {data: 'email', name: 'email'},
