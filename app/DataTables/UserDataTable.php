@@ -68,7 +68,6 @@ class UserDataTable extends DataTable
                     ->buttons(
                         Button::make('excel'),
                         Button::make('csv'),
-                        Button::make('pdf')
                     );
     }
 
