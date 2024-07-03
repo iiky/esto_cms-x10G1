@@ -13,13 +13,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-View::composer('layouts.backend.main', function ($view) {
-
-    $menus = menu();
-
-    $view->with('menus', $menus);
-});
-
 Route::get('/', function () {
     return view('home');
 })->name('home');
@@ -47,4 +40,13 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('/article', App\Http\Controllers\ArticleController::class)->parameters([
         'article' => 'article:slug',
     ]);
+
+    Route::prefix('setting')->group(function () {
+        Route::get('/',[App\Http\Controllers\SettingController::class, 'index'])->name('setting.index');
+        Route::get('/create',[App\Http\Controllers\SettingController::class, 'create'])->name('setting.create');
+        Route::post('/store',[App\Http\Controllers\SettingController::class, 'store'])->name('setting.store');
+        // Route::get('/edit/{setting}',[App\Http\Controllers\SettingController::class, 'edit'])->name('setting.edit');
+        // Route::put('/update/{setting}',[App\Http\Controllers\SettingController::class, 'update'])->name('setting.update');
+        Route::delete('/delete/{setting}',[App\Http\Controllers\SettingController::class, 'delete'])->name('setting.delete');
+    });
 });

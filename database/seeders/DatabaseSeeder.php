@@ -56,6 +56,18 @@ class DatabaseSeeder extends Seeder
             'serialize' => 0,
         ]);
 
+        Setting::create([
+            'key'   => 'favicon',
+            'value' => asset('/assets/images/favicon.png'),
+            'serialize' => 0,
+        ]);
+
+        Setting::create([
+            'key'   => 'author',
+            'value' => 'PT Esto Kreasi Nusantara Indonesia',
+            'serialize' => 0,
+        ]);
+
         $this->call(MenuSeeder::class);
     }
 }

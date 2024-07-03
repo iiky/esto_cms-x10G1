@@ -197,3 +197,25 @@ Breadcrumbs::for('article.show', function (BreadcrumbTrail $trail, $article) {
 });
 
 // **************************** END ARTICLE ***************************
+
+// **************************** Pengaturan ***************************
+
+// Home > Pengaturan
+Breadcrumbs::for('setting.index', function (BreadcrumbTrail $trail) {
+    $trail->parent('dashboard');
+    $trail->push('Daftar Pengaturan', route('setting.index'));
+});
+
+// Home > Pengaturan > Create
+Breadcrumbs::for('setting.create', function (BreadcrumbTrail $trail) {
+    $trail->parent('setting.index');
+    $trail->push('Tambah Pengaturan', route('setting.create'));
+});
+
+// Home > Pengaturan > Edit
+Breadcrumbs::for('setting.edit', function (BreadcrumbTrail $trail,$setting) {
+    $trail->parent('setting.index');
+    $trail->push('Edit Pengaturan', route('setting.edit',$setting->id));
+});
+
+// **************************** END Pengaturan ***************************
