@@ -68,6 +68,7 @@
    $(function () {
 
         var table = $('#table-user').DataTable({
+            responsive: true,
             processing: true,
             serverSide: true,
             language: {
@@ -99,7 +100,10 @@
             },
             dom:"Bfrtip",
             buttons:[
-                'excel', 'csv'
+                {
+                    extend:'excel',
+                    className:'btn btn-danger'
+                }
             ]
         });
     });
