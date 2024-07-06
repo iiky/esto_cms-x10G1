@@ -34,7 +34,7 @@
                                     <div class="mb-3 row">
                                         <label class="col-sm-3 col-form-label">Category Name</label>
                                         <div class="col-sm-9">
-                                            <input class="form-control @error('name') is-invalid @enderror" name="name" type="text" @if(isset($article_categories_data) || !is_null(old('name'))) value="@if(isset($article_categories_data)){{old('name',$article_categories_data->name)}}@else{{old('name')}}@endif" @endif placeholder="Ticket Categories"  autofocus>
+                                            <input class="form-control @error('name') is-invalid @enderror" name="name" type="text" @if(isset($article_categories_data) || !is_null(old('name'))) value="@if(isset($article_categories_data)){{old('name',$article_categories_data->name)}}@else{{old('name')}}@endif" @endif placeholder="Categories"  autofocus>
                                             @error('name')
                                                 <div class="invalid-feedback">
                                                     {{ $message }}

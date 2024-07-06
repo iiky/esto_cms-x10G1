@@ -118,16 +118,17 @@
 
                                     <div class="mb-3 row">
                                         <label class="col-sm-3 col-form-label" for="content">Content</label>
+                                        <div class="col-sm-9">
+                                            @error('content')
+                                                <p class="text-danger">{{ $message }}</p>
+                                            @enderror
 
-                                        @error('content')
-                                            <p class="text-danger">{{ $message }}</p>
-                                        @enderror
-
-                                        <div class="theme-form">
-                                            <div class="mb-3">
-                                                <textarea name="content" id="content" cols="30" rows="10">
-                                                   {{ (isset($article_data))? old('content',$article_data->content) : old('content') }}
-                                                </textarea>
+                                            <div class="theme-form">
+                                                <div class="mb-3">
+                                                    <textarea name="content" id="content" cols="30" rows="10">
+                                                    {{ (isset($article_data))? old('content',$article_data->content) : old('content') }}
+                                                    </textarea>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
