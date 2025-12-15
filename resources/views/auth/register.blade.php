@@ -42,7 +42,7 @@
                     </div>
                     <div class="form-group">
                         <label for="password" class="col-form-label @error('password') is-invalid @enderror">{{ __('Password') }}</label>
-                        <div class="form-input position-relative">
+                        <div class="form-input position-relative @error('password') is-invalid @enderror">
                             <input id="password" class="form-control password" type="password" name="password" required autocomplete="new-password" placeholder="*********">
                             <div class="show-hide"><span class="show"></span></div>
                         </div>
