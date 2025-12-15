@@ -27,7 +27,7 @@ class CreateNewUser implements CreatesNewUsers
                     'required',
                     'string',
                     'max:18',
-                    'regex:/^[a-z0-9_]+$/',
+                    'regex:/^[A-Za-z0-9_]+$/',
                     Rule::unique(User::class),
                 ],
                 'name' => ['required', 'string', 'max:255'],
@@ -45,7 +45,7 @@ class CreateNewUser implements CreatesNewUsers
                 'username.required' => 'Username wajib diisi.',
                 'username.string'   => 'Username harus berupa teks.',
                 'username.max'      => 'Username maksimal 18 karakter.',
-                'username.regex'    => 'Username hanya boleh berisi huruf kecil, angka, dan underscore (_), tanpa spasi.',
+                'username.regex'    => 'Username hanya boleh berisi huruf, angka, dan underscore (_), tanpa spasi.',
                 'username.unique'   => 'Username sudah digunakan, silakan pilih yang lain.',
 
                 // NAME
@@ -70,10 +70,10 @@ class CreateNewUser implements CreatesNewUsers
         )->validate();
 
         $user = User::create([
-            'username' => $input['username'],
-            'name' => $input['name'],
-            'email' => $input['email'],
-            'password' => Hash::make($input['password']),
+            'username'  => strtolower(trim($input['username'])),
+            'name'      => $input['name'],
+            'email'     => strtolower(trim($input['email'])),
+            'password'  => Hash::make($input['password']),
         ]);
 
         $user->assignRole('user');
