@@ -11,7 +11,7 @@
         });
     </script>
 @endif
-    
+
 <div class="container-fluid">
     <div class="page-title">
         <div class="row">
@@ -49,15 +49,15 @@
                                         @canany(['Permission Update', 'Permission Delete'])
                                             <td>
                                                 @can('Permission Update')
-                                                    <a href="/permission/{{ $permission->id }}/edit" class="txt-info"><i data-feather="edit-3"></i></a>
+                                                    <a href="{{ route('permission.edit',$permission->id) }}" class="txt-info"><i data-feather="edit-3"></i></a>
                                                 @endcan
                                                 @can('Permission Delete')
-                                                    <form method="post" action="/permission/{{ $permission->id }}" id="form-delete-{{ $loop->iteration }}" class="d-inline">
-                                                        @csrf    
+                                                    <form method="post" action="{{ route('permission.destroy',$permission->id) }}" id="form-delete-{{ $loop->iteration }}" class="d-inline">
+                                                        @csrf
                                                         @method('delete')
                                                         <a href="javascript:void(0)" onclick="swal({ title: 'Are you sure?', text: 'Once deleted, you will not be able to data!', icon: 'warning', buttons: true, dangerMode: true, }).then((willDelete) => { if (willDelete) { document.getElementById('form-delete-{{ $loop->iteration }}').submit(); } });" class="txt-danger"><i data-feather="trash"></i></a>
                                                     </form>
-                                                @endcan                                         
+                                                @endcan
                                             </td>
                                         @endcanany
                                     </tr>
@@ -70,12 +70,12 @@
                             <div class="left-header col horizontal-wrapper">
                                 <ul class="horizontal-menu">
                                     <li class="mega-menu outside">
-                                        <a class="nav-link" href="/permission/create"><i data-feather="plus"></i><span>Create New Permission</span></a>
+                                        <a class="nav-link" href="{{ route('permission.create') }}"><i data-feather="plus"></i><span>Create New Permission</span></a>
                                     </li>
                                 </ul>
                             </div>
                         </div>
-                    @endcan   
+                    @endcan
                 </div>
             </div>
         </div>

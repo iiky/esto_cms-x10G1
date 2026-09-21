@@ -48,7 +48,7 @@
                             <div class="left-header col horizontal-wrapper">
                                 <ul class="horizontal-menu">
                                     <li class="mega-menu outside">
-                                        <a class="nav-link" href="/user/create"><i data-feather="plus"></i><span>Create New User</span></a>
+                                        <a class="nav-link" href="{{ route('user.create') }}"><i data-feather="plus"></i><span>Create New User</span></a>
                                     </li>
                                 </ul>
                             </div>

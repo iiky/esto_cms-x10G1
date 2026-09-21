@@ -33,7 +33,7 @@ class MenuController extends Controller
     {
         $this->data['menus'] = Menu::all();
         $this->data['permissiongroups'] = PermissionGroup::all();
-        $this->data['action'] = "/menu";
+        $this->data['action'] = route('menu.store');
         return view('menu.form', $this->data);
     }
 
@@ -47,7 +47,7 @@ class MenuController extends Controller
     {
         Menu::create($request->all());
 
-        return redirect('/menu')->with('success', 'New menu has been created!');
+        return redirect()->route('menu.index')->with('success', 'New menu has been created!');
     }
 
     /**
@@ -61,7 +61,7 @@ class MenuController extends Controller
         $this->data['menus'] = Menu::all();
         $this->data['permissiongroups'] = PermissionGroup::all();
         $this->data['menu_data'] = $menu;
-        $this->data['action'] = "/menu/".$menu->id;
+        $this->data['action'] = route('menu.update',$menu->id);
         return view('menu.form', $this->data);
     }
 
@@ -77,7 +77,7 @@ class MenuController extends Controller
         Menu::find($menu->id)
             ->update($request->all());
 
-        return redirect('/menu')->with('success', 'Menu has been updated!');
+        return redirect()->route('menu.index')->with('success', 'Menu has been updated!');
     }
 
     /**
@@ -89,6 +89,6 @@ class MenuController extends Controller
     public function destroy(Menu $menu)
     {
         Menu::destroy($menu->id);
-        return redirect('/menu')->with('success', 'Menu has been deleted!');
+        return redirect()->route('menu.index')->with('success', 'Menu has been deleted!');
     }
 }

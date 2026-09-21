@@ -11,7 +11,7 @@
         });
     </script>
 @endif
-    
+
 <div class="container-fluid">
     <div class="page-title">
         <div class="row">
@@ -57,15 +57,15 @@
                                         @canany(['Menu Update', 'Menu Delete'])
                                             <td>
                                                 @can('Menu Update')
-                                                    <a href="/menu/{{ $menu->id }}/edit" class="txt-info"><i data-feather="edit-3"></i></a>
+                                                    <a href="{{ route('menu.edit',$menu->id) }}" class="txt-info"><i data-feather="edit-3"></i></a>
                                                 @endcan
                                                 @can('Menu Delete')
-                                                    <form method="post" action="/menu/{{ $menu->id }}" id="form-delete-{{ $loop->iteration }}" class="d-inline">
-                                                        @csrf    
+                                                    <form method="post" action="{{ route('menu.destroy',$menu->id) }}" id="form-delete-{{ $loop->iteration }}" class="d-inline">
+                                                        @csrf
                                                         @method('delete')
                                                         <a href="javascript:void(0)" onclick="swal({ title: 'Are you sure?', text: 'Once deleted, you will not be able to data!', icon: 'warning', buttons: true, dangerMode: true, }).then((willDelete) => { if (willDelete) { document.getElementById('form-delete-{{ $loop->iteration }}').submit(); } });" class="txt-danger"><i data-feather="trash"></i></a>
                                                     </form>
-                                                @endcan                                         
+                                                @endcan
                                             </td>
                                         @endcanany
                                     </tr>
@@ -78,12 +78,12 @@
                             <div class="left-header col horizontal-wrapper">
                                 <ul class="horizontal-menu">
                                     <li class="mega-menu outside">
-                                        <a class="nav-link" href="/menu/create"><i data-feather="plus"></i><span>Create New Menu</span></a>
+                                        <a class="nav-link" href="{{ route('menu.create') }}"><i data-feather="plus"></i><span>Create New Menu</span></a>
                                     </li>
                                 </ul>
                             </div>
                         </div>
-                    @endcan   
+                    @endcan
                 </div>
             </div>
         </div>

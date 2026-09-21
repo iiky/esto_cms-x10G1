@@ -29,7 +29,7 @@ class ArticleCategoryController extends Controller
      */
     public function create()
     {
-        $this->data['action'] = "/article_categories";
+        $this->data['action'] = route('article_categories.store');
         return view('article_categories.form', $this->data);
     }
 
@@ -43,7 +43,7 @@ class ArticleCategoryController extends Controller
     {
         ArticleCategory::create($request->all());
 
-        return redirect('article_categories')->with('success', 'New Category has been created!');
+        return redirect()->route('article_categories.index')->with('success', 'New Category has been created!');
     }
 
     /**
@@ -55,7 +55,7 @@ class ArticleCategoryController extends Controller
     public function edit(ArticleCategory $articleCategory)
     {
         $this->data['article_categories_data'] = $articleCategory;
-        $this->data['action'] = "/article_categories/" . $articleCategory->slug;
+        $this->data['action'] = route('article_categories.update',$articleCategory->slug);
         return view('article_categories.form', $this->data);
     }
 
@@ -75,7 +75,7 @@ class ArticleCategoryController extends Controller
         ArticleCategory::find($articleCategory->id)
             ->update($request->all());
 
-        return redirect('/article_categories')->with('success', 'Category has been updated!');
+        return redirect()->route('article_categories.index')->with('success', 'Category has been updated!');
     }
 
     /**
@@ -89,6 +89,6 @@ class ArticleCategoryController extends Controller
         ArticleCategory::find($articleCategory->id)
             ->update(['status' => FALSE]);
 
-        return redirect('/article_categories')->with('success', 'Category has been Deleted!');
+        return redirect()->route('article_categories.index')->with('success', 'Category has been Deleted!');
     }
 }

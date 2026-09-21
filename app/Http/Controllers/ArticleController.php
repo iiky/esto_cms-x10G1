@@ -36,7 +36,7 @@ class ArticleController extends Controller
     public function create()
     {
         $this->data['categories'] = ArticleCategory::all();
-        $this->data['action'] = "/article";
+        $this->data['action'] = route('article.store');
         return view('article.form', $this->data);
     }
 
@@ -61,7 +61,7 @@ class ArticleController extends Controller
 
         Article::create($request->all());
 
-        return redirect('article')->with('success', 'New article has been created!');
+        return redirect()->route('article.index')->with('success', 'New article has been created!');
     }
 
     /**
@@ -87,7 +87,7 @@ class ArticleController extends Controller
         $this->data['categories'] = ArticleCategory::all();
 
         $this->data['article_data'] = $article;
-        $this->data['action'] = "/article/" . $article->slug;
+        $this->data['action'] = route('article.update',$article->slug);
 
         return view('article.form', $this->data);
     }
@@ -121,7 +121,7 @@ class ArticleController extends Controller
 
         Article::find($article->id)->update($request->all());
 
-        return redirect('article')->with('success', 'Article ' . $article->title . ' has been updated!');
+        return redirect()->route('article.index')->with('success', 'Article ' . $article->title . ' has been updated!');
     }
 
     /**
@@ -136,6 +136,6 @@ class ArticleController extends Controller
         if ($article->image_path) {
             Storage::delete($article->image_path);
         }
-        return redirect('/article')->with('success', 'Article ' . $article->title . ' has been deleted!');
+        return redirect()->route('article.index')->with('success', 'Article ' . $article->title . ' has been deleted!');
     }
 }

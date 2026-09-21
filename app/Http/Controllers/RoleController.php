@@ -33,7 +33,7 @@ class RoleController extends Controller
      */
     public function create()
     {
-        $this->data['action'] = "/role";
+        $this->data['action'] = route('role.store');
         return view('role.form', $this->data);
     }
 
@@ -47,7 +47,7 @@ class RoleController extends Controller
     {
         Role::create($request->all());
 
-        return redirect('/role')->with('success', 'New role has been created!');
+        return redirect()->route('role.index')->with('success', 'New role has been created!');
     }
 
     /**
@@ -58,7 +58,7 @@ class RoleController extends Controller
      */
     public function show(Role $role)
     {
-        $this->data['action'] = "/role/showaction/" . $role->id;
+        $this->data['action'] = route('role.showaction',$role->id);
         $this->data['permission_groups'] = PermissionGroup::whereNull('permission_group_id')->get();
         $this->data['permissions'] = Permission::whereNull('permission_group_id')->get();
 
@@ -83,7 +83,7 @@ class RoleController extends Controller
             $role->givePermissionTo($permission['name']);
         }
 
-        return redirect('/role')->with('success', 'Permission has been updated!');
+        return redirect()->route('role.index')->with('success', 'Permission has been updated!');
     }
 
     /**
@@ -95,7 +95,7 @@ class RoleController extends Controller
     public function edit(Role $role)
     {
         $this->data['role_data'] = $role;
-        $this->data['action'] = "/role/" . $role->id;
+        $this->data['action'] = route('role.update',$role->id);
         return view('role.form', $this->data);
     }
 
@@ -111,7 +111,7 @@ class RoleController extends Controller
         Role::find($role->id)
             ->update($request->all());
 
-        return redirect('/role')->with('success', 'Role has been updated!');
+        return redirect()->route('role.index')->with('success', 'Role has been updated!');
     }
 
     /**
@@ -123,6 +123,6 @@ class RoleController extends Controller
     public function destroy(Role $role)
     {
         Role::destroy($role->id);
-        return redirect('/role')->with('success', 'Role has been deleted!');
+        return redirect()->route('role.index')->with('success', 'Role has been deleted!');
     }
 }

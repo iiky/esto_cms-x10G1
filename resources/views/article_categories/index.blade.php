@@ -11,7 +11,7 @@
         });
     </script>
 @endif
-    
+
 <div class="container-fluid">
     <div class="page-title">
         <div class="row">
@@ -45,15 +45,15 @@
                                         @canany(['Article Category Update', 'Article Category Delete'])
                                             <td>
                                                 @can('Article Category Update')
-                                                    <a href="{{ url("/article_categories/".$category->slug."/edit") }}" class="txt-info"><i data-feather="edit-3"></i></a>
+                                                    <a href="{{ route('article_categories.edit',$category->slug) }}" class="txt-info"><i data-feather="edit-3"></i></a>
                                                 @endcan
                                                 @can('Article Category Delete')
-                                                    <form method="post" action="{{ url("/article_categories/".$category->slug) }}" id="form-delete-{{ $loop->iteration }}" class="d-inline">
-                                                        @csrf    
+                                                    <form method="post" action="{{ route('article_categories.destroy',$category->slug) }}" id="form-delete-{{ $loop->iteration }}" class="d-inline">
+                                                        @csrf
                                                         @method('delete')
                                                         <a href="javascript:void(0)" onclick="swal({ title: 'Are you sure?', text: 'Once deleted, you will not be able to data!', icon: 'warning', buttons: true, dangerMode: true, }).then((willDelete) => { if (willDelete) { document.getElementById('form-delete-{{ $loop->iteration }}').submit(); } });" class="txt-danger"><i data-feather="trash"></i></a>
                                                     </form>
-                                                @endcan                                         
+                                                @endcan
                                             </td>
                                         @endcanany
                                     </tr>
@@ -66,12 +66,12 @@
                             <div class="left-header col horizontal-wrapper">
                                 <ul class="horizontal-menu">
                                     <li class="mega-menu outside">
-                                        <a class="nav-link" href="{{ url("/article_categories/create") }}"><i data-feather="plus"></i><span>Create New Article Categories</span></a>
+                                        <a class="nav-link" href="{{ route('article_categories.create') }}"><i data-feather="plus"></i><span>Create New Article Categories</span></a>
                                     </li>
                                 </ul>
                             </div>
                         </div>
-                    @endcan   
+                    @endcan
                 </div>
             </div>
         </div>

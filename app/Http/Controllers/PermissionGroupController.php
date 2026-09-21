@@ -32,7 +32,7 @@ class PermissionGroupController extends Controller
     {
         $this->data['permissiongroups'] = PermissionGroup::all();
 
-        $this->data['action'] = "/permissiongroup";
+        $this->data['action'] = route('permissiongroup.store');
         return view('permissiongroup.form', $this->data);
     }
 
@@ -46,7 +46,7 @@ class PermissionGroupController extends Controller
     {
         PermissionGroup::create($request->all());
 
-        return redirect('/permissiongroup')->with('success', 'New permission group has been created!');
+        return redirect()->route('permissiongroup.index')->with('success', 'New permission group has been created!');
     }
 
     /**
@@ -60,7 +60,7 @@ class PermissionGroupController extends Controller
         $this->data['permissiongroups'] = PermissionGroup::all();
 
         $this->data['permissiongroup_data'] = $permissiongroup;
-        $this->data['action'] = "/permissiongroup/".$permissiongroup->id;
+        $this->data['action'] = route('permissiongroup.update',$permissiongroup->id);
         return view('permissiongroup.form', $this->data);
     }
 
@@ -76,7 +76,7 @@ class PermissionGroupController extends Controller
         PermissionGroup::find($permissiongroup->id)
             ->update($request->all());
 
-        return redirect('/permissiongroup')->with('success', 'Permission Group has been updated!');
+        return redirect()->route('permissiongroup.index')->with('success', 'Permission Group has been updated!');
     }
 
     /**
@@ -88,6 +88,6 @@ class PermissionGroupController extends Controller
     public function destroy(PermissionGroup $permissiongroup)
     {
         PermissionGroup::destroy($permissiongroup->id);
-        return redirect('/permissiongroup')->with('success', 'Permission Group has been deleted!');
+        return redirect()->route('permissiongroup.index')->with('success', 'Permission Group has been deleted!');
     }
 }

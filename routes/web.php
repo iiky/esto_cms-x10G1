@@ -20,26 +20,12 @@ Route::get('/', function () {
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/dashboard', [App\Http\Controllers\DashboardController::class, 'index'])->name('dashboard');
 
-    Route::get('/user/role/{user}', [App\Http\Controllers\UserController::class, 'role'])->name('user.role');
-    Route::post('/user/roleaction/{user}', [App\Http\Controllers\UserController::class, 'roleaction']);
-    Route::resource('/user', App\Http\Controllers\UserController::class);
+    Route::prefix('user')->group(function () {
+        Route::get('role/{user}', [App\Http\Controllers\UserController::class, 'role'])->name('user.role');
+        Route::post('roleaction/{user}', [App\Http\Controllers\UserController::class, 'roleaction'])->name('user.role.action');
+    });
 
-    Route::post('/role/showaction/{role}', [App\Http\Controllers\RoleController::class, 'showaction']);
-    Route::resource('/role', App\Http\Controllers\RoleController::class);
-
-    Route::resource('/permissiongroup', App\Http\Controllers\PermissionGroupController::class)->except('show');
-
-    Route::resource('/permission', App\Http\Controllers\PermissionController::class)->except('show');
-
-    Route::resource('/menu', App\Http\Controllers\MenuController::class)->except('show');
-
-    Route::resource('/article_categories', App\Http\Controllers\ArticleCategoryController::class, ['parameters' => [
-        'article_categories' => 'articleCategory:slug'
-    ]])->except('show');
-
-    Route::resource('/article', App\Http\Controllers\ArticleController::class)->parameters([
-        'article' => 'article:slug',
-    ]);
+    Route::post('/role/showaction/{role}', [App\Http\Controllers\RoleController::class, 'showaction'])->name('role.showaction');
 
     Route::prefix('setting')->group(function () {
         Route::get('/',[App\Http\Controllers\SettingController::class, 'index'])->name('setting.index');
@@ -49,4 +35,17 @@ Route::middleware(['auth', 'verified'])->group(function () {
         // Route::put('/update/{setting}',[App\Http\Controllers\SettingController::class, 'update'])->name('setting.update');
         Route::delete('/delete/{setting}',[App\Http\Controllers\SettingController::class, 'delete'])->name('setting.delete');
     });
+
+
+    Route::resource('/user', App\Http\Controllers\UserController::class);
+    Route::resource('/role', App\Http\Controllers\RoleController::class);
+    Route::resource('/permissiongroup', App\Http\Controllers\PermissionGroupController::class)->except('show');
+    Route::resource('/permission', App\Http\Controllers\PermissionController::class)->except('show');
+    Route::resource('/menu', App\Http\Controllers\MenuController::class)->except('show');
+    Route::resource('/article_categories', App\Http\Controllers\ArticleCategoryController::class, ['parameters' => [
+        'article_categories' => 'articleCategory:slug'
+    ]])->except('show');
+    Route::resource('/article', App\Http\Controllers\ArticleController::class)->parameters([
+        'article' => 'article:slug',
+    ]);
 });

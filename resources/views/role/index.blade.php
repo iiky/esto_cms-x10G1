@@ -11,7 +11,7 @@
         });
     </script>
 @endif
-    
+
 <div class="container-fluid">
     <div class="page-title">
         <div class="row">
@@ -47,18 +47,18 @@
                                         @canany(['Role Update', 'Role Delete', 'Role Detail'])
                                             <td>
                                                 @can('Role Detail')
-                                                    <a href="/role/{{ $role->id }}" class="txt-primary"><i data-feather="share-2"></i></a>
+                                                    <a href="{{ route('role.show',$role->id) }}" class="txt-primary"><i data-feather="share-2"></i></a>
                                                 @endcan
                                                 @can('Role Update')
-                                                    <a href="/role/{{ $role->id }}/edit" class="txt-info"><i data-feather="edit-3"></i></a>
+                                                    <a href="{{ route('role.edit',$role->id) }}" class="txt-info"><i data-feather="edit-3"></i></a>
                                                 @endcan
                                                 @can('Role Delete')
-                                                    <form method="post" action="/role/{{ $role->id }}" id="form-delete-{{ $loop->iteration }}" class="d-inline">
-                                                        @csrf    
+                                                    <form method="post" action="{{ route('role.destroy',$role->id) }}" id="form-delete-{{ $loop->iteration }}" class="d-inline">
+                                                        @csrf
                                                         @method('delete')
                                                         <a href="javascript:void(0)" onclick="swal({ title: 'Are you sure?', text: 'Once deleted, you will not be able to data!', icon: 'warning', buttons: true, dangerMode: true, }).then((willDelete) => { if (willDelete) { document.getElementById('form-delete-{{ $loop->iteration }}').submit(); } });" class="txt-danger"><i data-feather="trash"></i></a>
                                                     </form>
-                                                @endcan                                         
+                                                @endcan
                                             </td>
                                         @endcanany
                                     </tr>
@@ -71,12 +71,12 @@
                             <div class="left-header col horizontal-wrapper">
                                 <ul class="horizontal-menu">
                                     <li class="mega-menu outside">
-                                        <a class="nav-link" href="/role/create"><i data-feather="plus"></i><span>Create New Role</span></a>
+                                        <a class="nav-link" href="{{ route('role.create') }}"><i data-feather="plus"></i><span>Create New Role</span></a>
                                     </li>
                                 </ul>
                             </div>
                         </div>
-                    @endcan   
+                    @endcan
                 </div>
             </div>
         </div>
