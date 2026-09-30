@@ -11,7 +11,14 @@ class ArticleCategory extends Model
 {
     use HasFactory, Sluggable;
 
-    protected $guarded = ['id'];
+    protected $fillable = [
+        'name',
+        'slug',
+        'status',
+        'meta_title',
+        'meta_description',
+        'meta_keywords',
+    ];
 
     public function article()
     {
@@ -25,5 +32,21 @@ class ArticleCategory extends Model
                 'source' => 'name'
             ]
         ];
+    }
+
+    /**
+     * Accessor SEO Title untuk Kategori
+     */
+    public function getSeoTitleAttribute(): string
+    {
+        return !empty($this->meta_title) ? $this->meta_title : ($this->name ?? '');
+    }
+
+    /**
+     * Accessor SEO Description untuk Kategori
+     */
+    public function getSeoDescriptionAttribute(): string
+    {
+        return !empty($this->meta_description) ? $this->meta_description : 'Kategori artikel ' . ($this->name ?? '');
     }
 }

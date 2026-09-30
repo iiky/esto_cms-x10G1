@@ -7,7 +7,30 @@
     <meta name="description" content="{{ $description ?? settings()['description'] }}">
     <meta name="keywords" content="{{ $keyword ?? settings()['keyword'] }}">
     <meta name="author" content="{{ $author ?? settings()['author'] }}">
+    <link rel="canonical" href="{{ $canonical_url ?? url()->current() }}">
     <meta name="csrf-token" content="{{ csrf_token() }}">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="{{ $og_type ?? 'website' }}">
+    <meta property="og:url" content="{{ $canonical_url ?? url()->current() }}">
+    <meta property="og:title" content="{{ $title ?? settings()['title'] }}">
+    <meta property="og:description" content="{{ $description ?? settings()['description'] }}">
+    <meta property="og:image" content="{{ $og_image ?? asset(settings()['favicon'] ?? '') }}">
+    <meta property="og:site_name" content="{{ settings()['title'] ?? config('app.name') }}">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="{{ $canonical_url ?? url()->current() }}">
+    <meta name="twitter:title" content="{{ $title ?? settings()['title'] }}">
+    <meta name="twitter:description" content="{{ $description ?? settings()['description'] }}">
+    <meta name="twitter:image" content="{{ $og_image ?? asset(settings()['favicon'] ?? '') }}">
+
+    @if(isset($schema_json_ld))
+    <!-- Structured Data (JSON-LD) -->
+    <script type="application/ld+json">
+    {!! json_encode($schema_json_ld, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT) !!}
+    </script>
+    @endif
 
     <link rel="icon" href="{{ settings()['favicon'] }}" type="image/x-icon">
     <link rel="shortcut icon" href="{{ settings()['favicon'] }}" type="image/x-icon">

@@ -56,6 +56,23 @@ class ArticleController extends Controller
         $payload['user_id'] = auth()->id();
         $payload['excerpt'] = Str::limit(strip_tags($request->content), 200);
 
+        if (empty($payload['slug'])) {
+            $payload['slug'] = SlugService::createSlug(Article::class, 'slug', $payload['title']);
+        } else {
+            $payload['slug'] = Str::slug($payload['slug']);
+        }
+
+        // Default meta fallback jika tidak diisi manual
+        if (empty($payload['meta_title'])) {
+            $payload['meta_title'] = $payload['title'];
+        }
+        if (empty($payload['meta_description'])) {
+            $payload['meta_description'] = $payload['excerpt'];
+        }
+        if (empty($payload['meta_keywords']) && !empty($payload['tags'])) {
+            $payload['meta_keywords'] = $payload['tags'];
+        }
+
         Article::create($payload);
 
         return redirect()->route('article.index')->with('success', 'New article has been created!');
@@ -70,6 +87,14 @@ class ArticleController extends Controller
     public function show(Article $article)
     {
         $this->data['article_data'] = $article;
+        $this->data['title'] = $article->seo_title . ' | ' . config('app.name');
+        $this->data['description'] = $article->seo_description;
+        $this->data['keyword'] = $article->seo_keywords;
+        $this->data['canonical_url'] = $article->canonical_url ?: route('article.show', $article->slug);
+        $this->data['og_image'] = $article->seo_image;
+        $this->data['og_type'] = 'article';
+        $this->data['schema_json_ld'] = $article->getSchemaJsonLd();
+
         return view('article.detail', $this->data);
     }
 
@@ -111,7 +136,10 @@ class ArticleController extends Controller
 
         $payload['published_at'] = date('Y-m-d', strtotime($request->published_at));
         $payload['excerpt'] = Str::limit(strip_tags($request->content), 200);
-        if ($request->title != $article->title) {
+
+        if (!empty($payload['slug'])) {
+            $payload['slug'] = Str::slug($payload['slug']);
+        } elseif ($request->title != $article->title) {
             $payload['slug'] = SlugService::createSlug(Article::class, 'slug', $request->title);
         }
 

@@ -23,8 +23,15 @@ class UpdateArticleCategoryRequest extends FormRequest
      */
     public function rules()
     {
+        $category = $this->route('articleCategory');
+        $categoryId = is_object($category) ? $category->id : null;
+
         return [
-            'name' => 'required|max:50',
+            'name'             => 'required|string|max:100',
+            'slug'             => 'nullable|string|max:100|unique:article_categories,slug,' . $categoryId,
+            'meta_title'       => 'nullable|string|max:255',
+            'meta_description' => 'nullable|string|max:500',
+            'meta_keywords'    => 'nullable|string|max:255',
         ];
     }
 }

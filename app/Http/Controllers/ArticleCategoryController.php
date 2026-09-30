@@ -42,7 +42,14 @@ class ArticleCategoryController extends Controller
      */
     public function store(StoreArticleCategoryRequest $request)
     {
-        ArticleCategory::create($request->all());
+        $payload = $request->validated();
+        if (empty($payload['slug'])) {
+            $payload['slug'] = SlugService::createSlug(ArticleCategory::class, 'slug', $payload['name']);
+        } else {
+            $payload['slug'] = \Illuminate\Support\Str::slug($payload['slug']);
+        }
+
+        ArticleCategory::create($payload);
 
         return redirect()->route('article_categories.index')->with('success', 'New Category has been created!');
     }
@@ -69,12 +76,15 @@ class ArticleCategoryController extends Controller
      */
     public function update(UpdateArticleCategoryRequest $request, ArticleCategory $articleCategory)
     {
-        if ($request->name != $articleCategory->name) {
-            $request['slug'] = SlugService::createSlug(ArticleCategory::class, 'slug', $request->name);
+        $payload = $request->validated();
+
+        if (!empty($payload['slug'])) {
+            $payload['slug'] = \Illuminate\Support\Str::slug($payload['slug']);
+        } elseif ($payload['name'] !== $articleCategory->name) {
+            $payload['slug'] = SlugService::createSlug(ArticleCategory::class, 'slug', $payload['name']);
         }
 
-        ArticleCategory::find($articleCategory->id)
-            ->update($request->all());
+        $articleCategory->update($payload);
 
         return redirect()->route('article_categories.index')->with('success', 'Category has been updated!');
     }

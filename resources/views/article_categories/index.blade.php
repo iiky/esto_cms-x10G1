@@ -32,6 +32,8 @@
                                 <tr>
                                     <th>#</th>
                                     <th>Article Category</th>
+                                    <th>SEO Slug</th>
+                                    <th>Articles</th>
                                     @canany(['Article Category Update', 'Article Category Delete'])
                                         <th>Action</th>
                                     @endcanany
@@ -41,17 +43,28 @@
                                 @foreach ($articleCategories as $category)
                                     <tr>
                                         <td>{{ $loop->iteration }}</td>
-                                        <td>{{ $category->name }}</td>
+                                        <td>
+                                            <span class="fw-bold">{{ $category->name }}</span>
+                                            @if(!empty($category->meta_description))
+                                                <div class="text-muted small text-truncate" style="max-width: 300px;">{{ $category->meta_description }}</div>
+                                            @endif
+                                        </td>
+                                        <td>
+                                            <code class="text-primary font-monospace">/{{ $category->slug }}</code>
+                                        </td>
+                                        <td>
+                                            <span class="badge badge-light-info">{{ $category->article->count() }} artikel</span>
+                                        </td>
                                         @canany(['Article Category Update', 'Article Category Delete'])
                                             <td>
                                                 @can('Article Category Update')
-                                                    <a href="{{ route('article_categories.edit',$category->slug) }}" class="txt-info"><i data-feather="edit-3"></i></a>
+                                                    <a href="{{ route('article_categories.edit',$category->slug) }}" class="txt-info me-2" title="Edit Kategori"><i data-feather="edit-3"></i></a>
                                                 @endcan
                                                 @can('Article Category Delete')
                                                     <form method="post" action="{{ route('article_categories.destroy',$category->slug) }}" id="form-delete-{{ $loop->iteration }}" class="d-inline">
                                                         @csrf
                                                         @method('delete')
-                                                        <a href="javascript:void(0)" onclick="swal({ title: 'Are you sure?', text: 'Once deleted, you will not be able to data!', icon: 'warning', buttons: true, dangerMode: true, }).then((willDelete) => { if (willDelete) { document.getElementById('form-delete-{{ $loop->iteration }}').submit(); } });" class="txt-danger"><i data-feather="trash"></i></a>
+                                                        <a href="javascript:void(0)" onclick="swal({ title: 'Apakah Anda yakin?', text: 'Kategori ini akan dinonaktifkan!', icon: 'warning', buttons: true, dangerMode: true, }).then((willDelete) => { if (willDelete) { document.getElementById('form-delete-{{ $loop->iteration }}').submit(); } });" class="txt-danger" title="Hapus Kategori"><i data-feather="trash"></i></a>
                                                     </form>
                                                 @endcan
                                             </td>
