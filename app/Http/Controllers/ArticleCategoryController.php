@@ -6,6 +6,7 @@ use App\Traits\ArticleCategoriesAuthorizable;
 use App\Models\ArticleCategory;
 use App\Http\Requests\StoreArticleCategoryRequest;
 use App\Http\Requests\UpdateArticleCategoryRequest;
+use Cviebrock\EloquentSluggable\Services\SlugService;
 
 class ArticleCategoryController extends Controller
 {

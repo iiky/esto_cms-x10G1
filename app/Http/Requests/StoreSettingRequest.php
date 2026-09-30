@@ -24,7 +24,11 @@ class StoreSettingRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'title'       => ['required', 'string', 'max:100'],
+            'author'      => ['nullable', 'string', 'max:100'],
+            'description' => ['nullable', 'string'],
+            'keyword'     => ['nullable', 'string'],
+            'favicon'     => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif,svg,ico', 'max:2048'],
         ];
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Actions\Fortify;
 
 use App\Models\User;
+use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
@@ -76,7 +77,10 @@ class CreateNewUser implements CreatesNewUsers
             'password'  => Hash::make($input['password']),
         ]);
 
-        $user->assignRole('user');
+        $defaultRole = Role::whereIn('name', ['User', 'user'])->first();
+        if ($defaultRole) {
+            $user->assignRole($defaultRole->name);
+        }
 
         return $user;
     }

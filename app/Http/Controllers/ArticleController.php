@@ -48,18 +48,15 @@ class ArticleController extends Controller
      */
     public function store(StoreArticleRequest $request)
     {
-        if (isset($request['highlite'])) {
-            $request['highlite'] = true;
-        } else {
-            $request['highlite'] = false;
-        }
+        $payload = $request->validated();
+        $payload['highlite'] = $request->boolean('highlite');
+        $payload['content'] = clean_html($payload['content']);
+        $payload['image_path'] = $request->file('image')->store('article-images', 'public');
+        $payload['published_at'] = date('Y-m-d', strtotime($request->published_at));
+        $payload['user_id'] = auth()->id();
+        $payload['excerpt'] = Str::limit(strip_tags($request->content), 200);
 
-        $request['image_path'] = $request->file('image')->store('article-images');
-        $request['published_at'] = date('Y-m-d', strtotime($request->published_at));
-        $request['user_id'] = auth()->user()->id;
-        $request['excerpt'] = Str::limit(strip_tags($request->content), 200);
-
-        Article::create($request->all());
+        Article::create($payload);
 
         return redirect()->route('article.index')->with('success', 'New article has been created!');
     }
@@ -101,25 +98,24 @@ class ArticleController extends Controller
      */
     public function update(UpdateArticleRequest $request, Article $article)
     {
-        if (isset($request['highlite'])) {
-            $request['highlite'] = true;
-        } else {
-            $request['highlite'] = false;
-        }
+        $payload = $request->validated();
+        $payload['highlite'] = $request->boolean('highlite');
+        $payload['content'] = clean_html($payload['content']);
 
-        if ($request->file('image')) {
-            if ($article->image_path) {
-                Storage::delete($article->image_path);
+        if ($request->hasFile('image')) {
+            if ($article->image_path && Storage::disk('public')->exists($article->image_path)) {
+                Storage::disk('public')->delete($article->image_path);
             }
-            $request['image_path'] = $request->file('image')->store('article-images');
-        }
-        $request['published_at'] = date('Y-m-d', strtotime($request->published_at));
-        $request['excerpt'] = Str::limit(strip_tags($request->content), 200);
-        if ($request->title != $article->title) {
-            $request['slug'] = SlugService::createSlug(Article::class, 'slug', $request->title);
+            $payload['image_path'] = $request->file('image')->store('article-images', 'public');
         }
 
-        Article::find($article->id)->update($request->all());
+        $payload['published_at'] = date('Y-m-d', strtotime($request->published_at));
+        $payload['excerpt'] = Str::limit(strip_tags($request->content), 200);
+        if ($request->title != $article->title) {
+            $payload['slug'] = SlugService::createSlug(Article::class, 'slug', $request->title);
+        }
+
+        $article->update($payload);
 
         return redirect()->route('article.index')->with('success', 'Article ' . $article->title . ' has been updated!');
     }
@@ -132,10 +128,11 @@ class ArticleController extends Controller
      */
     public function destroy(Article $article)
     {
-        Article::destroy($article->id);
-        if ($article->image_path) {
-            Storage::delete($article->image_path);
+        if ($article->image_path && Storage::disk('public')->exists($article->image_path)) {
+            Storage::disk('public')->delete($article->image_path);
         }
+        $article->delete();
+
         return redirect()->route('article.index')->with('success', 'Article ' . $article->title . ' has been deleted!');
     }
 }

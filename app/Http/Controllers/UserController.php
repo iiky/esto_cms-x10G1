@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Traits\UsersAuthorizable;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Gate;
 use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\Hash;
 
@@ -60,10 +62,13 @@ class UserController extends Controller
         // 3. Simpan ke Database
         $user = User::create($validatedData);
 
-        // 4. User assign role User
-        $user->assignRole('user');
+        // 4. User assign role User jika role tersedia
+        $defaultRole = Role::whereIn('name', ['User', 'user'])->first();
+        if ($defaultRole) {
+            $user->assignRole($defaultRole->name);
+        }
 
-        return redirect()->route('users.index')->with('success', 'User berhasil ditambahkan!');
+        return redirect()->route('user.index')->with('success', 'User berhasil ditambahkan!');
     }
 
     /**
@@ -117,7 +122,7 @@ class UserController extends Controller
         // 3. Update Data User
         $user->update($validatedData);
 
-        return redirect()->route('users.index')->with('success', 'User berhasil diperbarui!');
+        return redirect()->route('user.index')->with('success', 'User berhasil diperbarui!');
     }
 
     public function role(User $user)
@@ -132,7 +137,11 @@ class UserController extends Controller
 
     public function roleaction(Request $request, User $user)
     {
-        $user->syncRoles($request['roles']);
+        $request->validate([
+            'roles' => ['nullable', 'array'],
+        ]);
+
+        $user->syncRoles($request->input('roles', []));
 
         return redirect()->route('user.index')->with('success', 'Roles ' . $user->name . ' has been updated!');
     }
@@ -146,5 +155,17 @@ class UserController extends Controller
     public function destroy(User $user)
     {
         abort_if(Gate::denies('User Banned'), 403);
+
+        if ($user->id === auth()->id()) {
+            return redirect()->route('user.index')->with('error', 'Anda tidak dapat menghapus akun Anda sendiri!');
+        }
+
+        if ($user->hasRole('Super Admin') && User::role('Super Admin')->count() <= 1) {
+            return redirect()->route('user.index')->with('error', 'Tidak dapat menghapus satu-satunya Super Admin!');
+        }
+
+        $user->delete();
+
+        return redirect()->route('user.index')->with('success', 'User berhasil dihapus!');
     }
 }

@@ -2,6 +2,7 @@
 
 use App\Models\Menu;
 use App\Models\Setting;
+use Illuminate\Support\Facades\Auth;
 
 if(!function_exists('menu'))
 {
@@ -17,13 +18,13 @@ if(!function_exists('menu'))
         foreach ($menus as $menu) {
             $data = array();
             if (!is_null($menu->permission_group_id)) {
-                $permissions = $menu->permissiongroup->permissions;
+                $permissions = $menu->permissiongroup ? $menu->permissiongroup->permissions : [];
                 $data_permission = array();
                 foreach ($permissions as $permission) {
                     $data_permission[] = $permission->name;
                 }
 
-                if (Auth::user()->canany($data_permission)) {
+                if (Auth::check() && Auth::user()->canany($data_permission)) {
                     $data['id'] = $menu->id;
                     $data['menu_id'] = $menu->menu_id;
                     $data['nama_menu'] = $menu->nama_menu;
@@ -78,5 +79,19 @@ if(!function_exists('settings')){
         $data['favicon'] = Setting::getValue('favicon');
 
         return $data;
+    }
+}
+
+if(!function_exists('clean_html')){
+    function clean_html($html)
+    {
+        if (empty($html)) {
+            return '';
+        }
+        // Bersihkan tag script, inline event handler (onload, onerror, dll), dan skema javascript:
+        $clean = preg_replace('#<script(.*?)>(.*?)</script>#is', '', $html);
+        $clean = preg_replace('#\s*on\w+\s*=\s*(".*?"|\'.*?\'|[^\'">\s]+)#is', '', $clean);
+        $clean = preg_replace('#href\s*=\s*["\']javascript:[^"\']*["\']#is', 'href="#"', $clean);
+        return $clean;
     }
 }

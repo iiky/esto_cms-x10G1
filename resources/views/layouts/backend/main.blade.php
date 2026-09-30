@@ -87,15 +87,17 @@
       </div>
     </div>
 
+    @if(config('services.google_analytics.id'))
     <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-NKRBK594J0"></script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id={{ config('services.google_analytics.id') }}"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
 
-      gtag('config', 'G-NKRBK594J0');
+      gtag('config', '{{ config('services.google_analytics.id') }}');
     </script>
+    @endif
 
     <!-- Bootstrap js-->
     <script src="{{ asset('/assets/js/bootstrap/bootstrap.bundle.min.js') }}"></script>

@@ -7,7 +7,14 @@
 @if(session()->has('success'))
     <script>
         $(document).ready(function() {
-            swal("Succses!", "{{ session('success') }}", "success");
+            swal("Success!", "{{ session('success') }}", "success");
+        });
+    </script>
+@endif
+@if(session()->has('error'))
+    <script>
+        $(document).ready(function() {
+            swal("Error!", "{{ session('error') }}", "error");
         });
     </script>
 @endif

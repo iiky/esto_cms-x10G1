@@ -34,7 +34,8 @@ class UserDataTable extends DataTable
                     $btn .= '<a href="'.route('user.edit',$row->id).'" class="txt-info m-1"><i data-feather="edit-3"></i></a>';
                 }
                 return $btn;
-            });
+            })
+            ->rawColumns(['action']);
     }
 
     /**

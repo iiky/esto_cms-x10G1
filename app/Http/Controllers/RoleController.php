@@ -69,19 +69,11 @@ class RoleController extends Controller
 
     public function showaction(Request $request, Role $role)
     {
-        $permission_array = explode(',', $request['permission']);
+        $rawPermissions = $request->input('permission');
+        $permission_array = !empty($rawPermissions) ? array_filter(explode(',', $rawPermissions)) : [];
 
-        foreach ($role->permissions as $permission) {
-            if (!in_array($permission['id'], $permission_array)) {
-                $permission = Permission::find($permission['id']);
-                $role->revokePermissionTo($permission);
-            }
-        }
-
-        foreach ($permission_array as $permission_id) {
-            $permission = Permission::find($permission_id);
-            $role->givePermissionTo($permission['name']);
-        }
+        $permissions = Permission::whereIn('id', $permission_array)->pluck('name')->toArray();
+        $role->syncPermissions($permissions);
 
         return redirect()->route('role.index')->with('success', 'Permission has been updated!');
     }
@@ -108,8 +100,7 @@ class RoleController extends Controller
      */
     public function update(UpdateRoleRequest $request, Role $role)
     {
-        Role::find($role->id)
-            ->update($request->all());
+        $role->update($request->validated());
 
         return redirect()->route('role.index')->with('success', 'Role has been updated!');
     }
@@ -122,7 +113,11 @@ class RoleController extends Controller
      */
     public function destroy(Role $role)
     {
-        Role::destroy($role->id);
+        if ($role->name === 'Super Admin') {
+            return redirect()->route('role.index')->with('error', 'Role Super Admin tidak dapat dihapus!');
+        }
+
+        $role->delete();
         return redirect()->route('role.index')->with('success', 'Role has been deleted!');
     }
 }
