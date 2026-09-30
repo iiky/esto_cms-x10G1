@@ -7,15 +7,21 @@
     <meta name="description" content="{{ $description ?? settings()['description'] }}">
     <meta name="keywords" content="{{ $keyword ?? settings()['keyword'] }}">
     <meta name="author" content="{{ $author ?? settings()['author'] }}">
+    <meta name="robots" content="{{ $robots ?? settings()['robots_index'] ?? 'index, follow' }}">
     <link rel="canonical" href="{{ $canonical_url ?? url()->current() }}">
     <meta name="csrf-token" content="{{ csrf_token() }}">
+
+    @if(!empty(setting('google_search_console')))
+    <!-- Google Search Console Verification -->
+    <meta name="google-site-verification" content="{{ setting('google_search_console') }}">
+    @endif
 
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="{{ $og_type ?? 'website' }}">
     <meta property="og:url" content="{{ $canonical_url ?? url()->current() }}">
     <meta property="og:title" content="{{ $title ?? settings()['title'] }}">
     <meta property="og:description" content="{{ $description ?? settings()['description'] }}">
-    <meta property="og:image" content="{{ $og_image ?? asset(settings()['favicon'] ?? '') }}">
+    <meta property="og:image" content="{{ $og_image ?? (setting('og_image') ?: settings()['favicon']) }}">
     <meta property="og:site_name" content="{{ settings()['title'] ?? config('app.name') }}">
 
     <!-- Twitter Card -->
@@ -23,7 +29,7 @@
     <meta name="twitter:url" content="{{ $canonical_url ?? url()->current() }}">
     <meta name="twitter:title" content="{{ $title ?? settings()['title'] }}">
     <meta name="twitter:description" content="{{ $description ?? settings()['description'] }}">
-    <meta name="twitter:image" content="{{ $og_image ?? asset(settings()['favicon'] ?? '') }}">
+    <meta name="twitter:image" content="{{ $og_image ?? (setting('og_image') ?: settings()['favicon']) }}">
 
     @if(isset($schema_json_ld))
     <!-- Structured Data (JSON-LD) -->
@@ -70,6 +76,9 @@
     @yield('css')
 
     <script src="{{ asset('/assets/js/jquery-3.5.1.min.js') }}"></script>
+    @if(!empty(setting('custom_head_scripts')))
+    {!! setting('custom_head_scripts') !!}
+    @endif
   </head>
   <!-- <body onload="startTime()"> -->
   <body>
@@ -110,15 +119,18 @@
       </div>
     </div>
 
-    @if(config('services.google_analytics.id'))
+    @php
+      $googleAnalyticsId = setting('google_analytics_id') ?: config('services.google_analytics.id');
+    @endphp
+    @if(!empty($googleAnalyticsId))
     <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id={{ config('services.google_analytics.id') }}"></script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id={{ $googleAnalyticsId }}"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
 
-      gtag('config', '{{ config('services.google_analytics.id') }}');
+      gtag('config', '{{ $googleAnalyticsId }}');
     </script>
     @endif
 
@@ -169,5 +181,8 @@
     <!-- <script src="/assets/js/theme-customizer/customizer.js"></script> -->
     <!-- login js-->
     <!-- Plugin used-->
+    @if(!empty(setting('custom_footer_scripts')))
+    {!! setting('custom_footer_scripts') !!}
+    @endif
   </body>
 </html>

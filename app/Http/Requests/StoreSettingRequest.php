@@ -24,11 +24,39 @@ class StoreSettingRequest extends FormRequest
     public function rules()
     {
         return [
-            'title'       => ['required', 'string', 'max:100'],
-            'author'      => ['nullable', 'string', 'max:100'],
-            'description' => ['nullable', 'string'],
-            'keyword'     => ['nullable', 'string'],
-            'favicon'     => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif,svg,ico', 'max:2048'],
+            // Operasional & Identitas Web
+            'title'                 => ['required', 'string', 'max:100'],
+            'tagline'               => ['nullable', 'string', 'max:255'],
+            'company_name'          => ['nullable', 'string', 'max:150'],
+            'email'                 => ['nullable', 'email', 'max:100'],
+            'phone'                 => ['nullable', 'string', 'max:50'],
+            'address'               => ['nullable', 'string', 'max:500'],
+            'operating_hours'       => ['nullable', 'string', 'max:150'],
+            'logo'                  => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif,svg,webp', 'max:2048'],
+            'favicon'               => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif,svg,ico', 'max:2048'],
+
+            // SEO Default Web
+            'meta_title'            => ['nullable', 'string', 'max:150'],
+            'description'           => ['nullable', 'string', 'max:500'],
+            'keyword'               => ['nullable', 'string', 'max:500'],
+            'author'                => ['nullable', 'string', 'max:100'],
+            'og_image'              => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif,svg,webp', 'max:3072'],
+            'robots_index'          => ['nullable', 'string', 'in:index, follow,noindex, nofollow,index, nofollow,noindex, follow'],
+
+            // Integrasi Webmaster & Analytics
+            'google_analytics_id'   => ['nullable', 'string', 'max:50'],
+            'google_search_console' => ['nullable', 'string', 'max:255'],
+
+            // Media Sosial
+            'facebook_url'          => ['nullable', 'url', 'max:255'],
+            'instagram_url'         => ['nullable', 'url', 'max:255'],
+            'twitter_url'           => ['nullable', 'url', 'max:255'],
+            'linkedin_url'          => ['nullable', 'url', 'max:255'],
+            'youtube_url'           => ['nullable', 'url', 'max:255'],
+
+            // Skrip Kustom
+            'custom_head_scripts'   => ['nullable', 'string'],
+            'custom_footer_scripts' => ['nullable', 'string'],
         ];
     }
 }

@@ -45,6 +45,60 @@ class DatabaseSeeder extends Seeder
         ]);
 
         Setting::create([
+            'key' => 'tagline',
+            'value' => 'Portal Informasi & Solusi Media Terpadu',
+            'serialize' => 0,
+        ]);
+
+        Setting::create([
+            'key' => 'company_name',
+            'value' => 'PT. Esto Kreasi Nusantara',
+            'serialize' => 0,
+        ]);
+
+        Setting::create([
+            'key' => 'email',
+            'value' => 'kontak@estocms.id',
+            'serialize' => 0,
+        ]);
+
+        Setting::create([
+            'key' => 'phone',
+            'value' => '+62 812-3456-7890',
+            'serialize' => 0,
+        ]);
+
+        Setting::create([
+            'key' => 'address',
+            'value' => 'Jakarta, Indonesia',
+            'serialize' => 0,
+        ]);
+
+        Setting::create([
+            'key' => 'operating_hours',
+            'value' => 'Senin - Jumat: 08:00 - 17:00 WIB',
+            'serialize' => 0,
+        ]);
+
+        Setting::create([
+            'key'   => 'logo',
+            'value' => asset('/assets/images/logo/logo.png'),
+            'serialize' => 0,
+        ]);
+
+        Setting::create([
+            'key'   => 'favicon',
+            'value' => asset('/assets/images/favicon.png'),
+            'serialize' => 0,
+        ]);
+
+        Setting::create([
+            'key' => 'meta_title',
+            'value' => 'ESTO CMS - Base CMS Terpadu Berbasis Laravel',
+            'serialize' => 0,
+        ]);
+
+        Setting::create([
             'key' => 'keyword',
             'value' => 'a:6:{i:0;s:7:"Laravel";i:1;s:9:"Framework";i:2;s:17:"Framework Laravel";i:3;s:3:"CMS";i:4;s:8:"ESTO CMS";i:5;s:24:"PT Esto Kreasi Nusantara";}',
             'serialize' => 1,
@@ -57,14 +111,14 @@ class DatabaseSeeder extends Seeder
         ]);
 
         Setting::create([
-            'key'   => 'favicon',
-            'value' => asset('/assets/images/favicon.png'),
+            'key'   => 'author',
+            'value' => 'PT Esto Kreasi Nusantara Indonesia',
             'serialize' => 0,
         ]);
 
         Setting::create([
-            'key'   => 'author',
-            'value' => 'PT Esto Kreasi Nusantara Indonesia',
+            'key'   => 'robots_index',
+            'value' => 'index, follow',
             'serialize' => 0,
         ]);
 

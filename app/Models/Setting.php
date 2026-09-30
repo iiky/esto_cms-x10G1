@@ -17,11 +17,11 @@ class Setting extends Model
         'serialize',
     ];
 
-    public static function getValue($key)
+    public static function getValue($key, $default = null)
     {
         $value_data = Setting::find($key);
         if (!$value_data) {
-            return null;
+            return $default;
         }
 
         if ($value_data->serialize) {
@@ -32,29 +32,40 @@ class Setting extends Model
             }
         }
 
-        return $value_data->value;
+        return $value_data->value ?? $default;
+    }
+
+    public static function getAllSettings(): array
+    {
+        $settings = Setting::all();
+        $result = [];
+        foreach ($settings as $setting) {
+            $result[$setting->key] = self::getValue($setting->key);
+        }
+        return $result;
     }
 
     public static function setValue($value)
     {
-        $value_key = array_keys($value);
-        foreach ($value_key as $key) {
-            $value_data = Setting::firstOrNew(['key' => $key]);
+        $fileKeys = ['favicon', 'logo', 'og_image'];
 
-            if ($key === "favicon") {
-                if (isset($value['favicon']) && $value['favicon'] instanceof \Illuminate\Http\UploadedFile) {
-                    $link_upload_image = $value['favicon']->store('favicon', 'public');
-                    $value_data->value = asset('storage/' . $link_upload_image);
+        foreach ($value as $key => $val) {
+            if (in_array($key, $fileKeys, true)) {
+                if ($val instanceof \Illuminate\Http\UploadedFile) {
+                    $value_data = Setting::firstOrNew(['key' => $key]);
+                    $path = $val->store('settings', 'public');
+                    $value_data->value = asset('storage/' . $path);
                     $value_data->serialize = 0;
                     $value_data->save();
                 }
                 continue;
             }
 
+            $value_data = Setting::firstOrNew(['key' => $key]);
             if ($value_data->serialize) {
-                $value_data->value = serialize($value[$key]);
+                $value_data->value = serialize($val);
             } else {
-                $value_data->value = is_array($value[$key]) ? implode(',', $value[$key]) : $value[$key];
+                $value_data->value = is_array($val) ? implode(',', $val) : $val;
             }
             $value_data->save();
         }

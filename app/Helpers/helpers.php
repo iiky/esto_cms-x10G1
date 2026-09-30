@@ -65,20 +65,63 @@ if(!function_exists('menu'))
     }
 }
 
+if(!function_exists('setting')){
+    function setting($key, $default = null)
+    {
+        $all = settings();
+        return $all[$key] ?? Setting::getValue($key, $default);
+    }
+}
+
 if(!function_exists('settings')){
     function settings()
     {
-        $data['title'] = Setting::getValue('title');
-        $keyword = Setting::getValue('keyword');
-        if(is_Array($keyword)){
-            $keyword = implode(',',$keyword);
+        static $cachedSettings = null;
+        if ($cachedSettings !== null) {
+            return $cachedSettings;
         }
-        $data['keyword'] = $keyword;
-        $data['description'] = Setting::getValue('description');
-        $data['author'] = Setting::getValue('author');
-        $data['favicon'] = Setting::getValue('favicon');
 
-        return $data;
+        $all = Setting::getAllSettings();
+
+        $defaults = [
+            'title'                 => 'ESTO CMS',
+            'tagline'               => 'Portal Informasi & Content Management System',
+            'company_name'          => 'PT. ESTO Solusi Media',
+            'email'                 => 'info@estocms.com',
+            'phone'                 => '+62 812-3456-7890',
+            'address'               => 'Jakarta, Indonesia',
+            'operating_hours'       => 'Senin - Jumat: 08:00 - 17:00 WIB',
+            'logo'                  => asset('/assets/images/logo/logo.png'),
+            'favicon'               => asset('/assets/images/favicon.png'),
+            'meta_title'            => 'ESTO CMS - Solusi CMS Handal & Cepat',
+            'description'           => 'ESTO CMS adalah platform manajemen konten terpadu yang dioptimalkan untuk performa cepat dan SEO tinggi.',
+            'keyword'               => 'cms, portal berita, esto, media, indonesia',
+            'author'                => 'ESTO CMS Team',
+            'og_image'              => asset('/assets/images/logo/logo.png'),
+            'robots_index'          => 'index, follow',
+            'google_analytics_id'   => '',
+            'google_search_console' => '',
+            'facebook_url'          => '',
+            'instagram_url'         => '',
+            'twitter_url'           => '',
+            'linkedin_url'          => '',
+            'youtube_url'           => '',
+            'custom_head_scripts'   => '',
+            'custom_footer_scripts' => '',
+        ];
+
+        foreach ($defaults as $k => $def) {
+            if (!isset($all[$k]) || $all[$k] === null || $all[$k] === '') {
+                $all[$k] = $def;
+            }
+        }
+
+        if (is_array($all['keyword'])) {
+            $all['keyword'] = implode(', ', $all['keyword']);
+        }
+
+        $cachedSettings = $all;
+        return $cachedSettings;
     }
 }
 

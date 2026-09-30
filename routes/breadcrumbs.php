@@ -203,7 +203,7 @@ Breadcrumbs::for('article.show', function (BreadcrumbTrail $trail, $article) {
 // Home > Pengaturan
 Breadcrumbs::for('setting.index', function (BreadcrumbTrail $trail) {
     $trail->parent('dashboard');
-    $trail->push('Daftar Pengaturan', route('setting.index'));
+    $trail->push('Pengaturan Website & SEO', route('setting.index'));
 });
 
 // **************************** END Pengaturan ***************************
