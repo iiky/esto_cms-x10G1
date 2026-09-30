@@ -207,3 +207,13 @@ Breadcrumbs::for('setting.index', function (BreadcrumbTrail $trail) {
 });
 
 // **************************** END Pengaturan ***************************
+
+// **************************** Profil & Password ***************************
+
+// Home > Profil
+Breadcrumbs::for('profile.index', function (BreadcrumbTrail $trail) {
+    $trail->parent('dashboard');
+    $trail->push('Profil & Keamanan Akun', route('profile.index'));
+});
+
+// **************************** END Profil & Password ***************************

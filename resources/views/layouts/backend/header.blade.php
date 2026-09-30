@@ -36,14 +36,17 @@
         <li class="maximize"><a class="text-dark" href="#!" onclick="javascript:toggleFullScreen()"><i data-feather="maximize"></i></a></li>
         <li class="profile-nav onhover-dropdown p-0 me-0">
             <div class="media profile-media">
-                <img class="b-r-10" height="37" src="@if(filter_var(auth()->user()->foto, FILTER_VALIDATE_URL)) {{ auth()->user()->foto }} @else {{ asset('/assets/images/foto/'.auth()->user()->foto) }} @endif" alt="">
+                <img class="b-r-10 rounded-circle" height="37" width="37" style="object-fit: cover;" src="{{ auth()->user()->avatar_url }}" alt="{{ auth()->user()->name }}">
                 <div class="media-body"><span>{{ auth()->user()->name }}</span>
-                <p class="mb-0 font-roboto">Admin <i class="middle fa fa-angle-down"></i></p>
+                <p class="mb-0 font-roboto">{{ auth()->user()->role_name }} <i class="middle fa fa-angle-down"></i></p>
                 </div>
             </div>
             <ul class="profile-dropdown onhover-show-div">
-                <li><a href="#" target="_blank"><i data-feather="user"></i><span>Account </span></a></li>
-                <li><a href="#" target="_blank"><i data-feather="settings"></i><span>Settings</span></a></li>
+                <li><a href="{{ route('profile.index') }}"><i data-feather="user"></i><span>Profil Akun</span></a></li>
+                <li><a href="{{ route('profile.index') }}#password"><i data-feather="lock"></i><span>Ganti Password</span></a></li>
+                @can('Setting Access')
+                <li><a href="{{ route('setting.index') }}"><i data-feather="settings"></i><span>Website Setting</span></a></li>
+                @endcan
                 <li>
                     <a href="{{ route('logout') }}"
                         onclick="event.preventDefault(); document.getElementById('logout-form').submit();">

@@ -32,6 +32,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::post('/store', [App\Http\Controllers\SettingController::class, 'store'])->name('setting.store');
     });
 
+    Route::prefix('profile')->group(function () {
+        Route::get('/', [App\Http\Controllers\ProfileController::class, 'index'])->name('profile.index');
+        Route::put('/update', [App\Http\Controllers\ProfileController::class, 'updateProfile'])->name('profile.update');
+        Route::put('/password', [App\Http\Controllers\ProfileController::class, 'updatePassword'])->name('profile.password');
+    });
+
 
     Route::resource('/user', App\Http\Controllers\UserController::class);
     Route::resource('/role', App\Http\Controllers\RoleController::class);
